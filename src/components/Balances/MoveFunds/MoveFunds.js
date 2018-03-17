@@ -70,6 +70,10 @@ class MoveFunds extends Component {
     });
   };
 
+  handleMaxButtonClick = () => {
+    this.setState({ amount: this.props.maxAmount });
+  }
+
   render() {
     const { type, symbol, isLoading, isError } = this.props;
     const { amount, address, amountInvalid, addressInvalid } = this.state;
@@ -99,6 +103,9 @@ class MoveFunds extends Component {
         <CustomButton onClick={this.handleButtonClick} width={94}>
           {type}
         </CustomButton>
+        <CustomButton onClick={this.handleMaxButtonClick}>
+          max
+        </CustomButton>
         <Loader
           fillContainer
           width="36px"
@@ -117,7 +124,8 @@ MoveFunds.propTypes = {
   action: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
-  isError: PropTypes.bool
+  isError: PropTypes.bool,
+  maxAmount: PropTypes.string.isRequired
 };
 
 MoveFunds.defaultProps = {

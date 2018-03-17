@@ -147,6 +147,8 @@ const getColumns = ({ onAddressClick }) => [
   }
 ];
 
+/* eslint-disable react/no-multi-comp */
+
 class Balances extends Component {
   constructor(props) {
     super(props);
@@ -189,6 +191,13 @@ class Balances extends Component {
       requestData
     } = this.props;
     const symbol = token.symbol || cropAddress(token.address, 4);
+
+    const currentTokenBalance = balances.find(t => t.address === token.address) || {
+      ethen: '0',
+      wallet: '0'
+    };
+    const etherBalance = balances.find(t => t.real);
+    const maxBalance = isEtherActive ? etherBalance : currentTokenBalance;
     return (
       <Fragment>
         <Header>Balance</Header>
@@ -208,6 +217,7 @@ class Balances extends Component {
           </TabList>
           <TabPanel>
             <MoveFunds
+              maxAmount={maxBalance.wallet}
               isError={isError(approvingState)}
               isLoading={getIsLoading(approvingState)}
               action={this.getActionHandler(deposit)}
@@ -217,6 +227,7 @@ class Balances extends Component {
           </TabPanel>
           <TabPanel>
             <MoveFunds
+              maxAmount={maxBalance.ethen}
               action={this.getActionHandler(withdraw)}
               type={MOVE_FUNDS_TYPES.WITHDRAW}
               symbol={isEtherActive ? "ETH" : symbol}
@@ -224,6 +235,7 @@ class Balances extends Component {
           </TabPanel>
           <TabPanel>
             <MoveFunds
+              maxAmount={maxBalance.wallet}
               action={this.getActionHandler(transfer)}
               type={MOVE_FUNDS_TYPES.TRANSFER}
               symbol={isEtherActive ? "ETH" : symbol}
@@ -262,7 +274,8 @@ Balances.propTypes = {
   withdraw: PropTypes.func.isRequired,
   transfer: PropTypes.func.isRequired,
   requestData: PropTypes.func.isRequired,
-  token: PropTypes.object.isRequired
+  token: PropTypes.object.isRequired,
+  approvingState: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
