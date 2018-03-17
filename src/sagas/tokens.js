@@ -1,6 +1,7 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 
 import handleError from './errors';
+import { getCurrentTokenWalletBalance } from './balances';
 import API from '../API';
 import { updateTokensList, addNewToken, setCurrentToken } from '../reducers/tokens';
 import { GET_TOKENS_LIST, CURRENT_TOKEN_CHANGED, ADD_NEW_TOKEN } from '../reducers/actions';
@@ -38,6 +39,7 @@ function* handleAddNewToken(action) {
     const { decimals, address } = action.payload;
     yield put(addNewToken({ address, decimals }));
     yield put(setCurrentToken({ address }));
+    yield getCurrentTokenWalletBalance();
   } catch (e) {
     yield handleError(e);
   }

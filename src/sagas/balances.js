@@ -1,4 +1,4 @@
-import { takeEvery, put, call, select } from "redux-saga/effects";
+import { takeEvery, put, call, select, take } from "redux-saga/effects";
 import { delay } from "redux-saga";
 import { promisify } from "es6-promisify";
 import BigNumber from "bignumber.js";
@@ -12,7 +12,7 @@ import getWeb3, {
   sendRawTransaction
 } from "../API/web3";
 
-import { GET_BALANCES, DEPOSIT, WITHDRAW, TRANSFER } from "../reducers/actions";
+import { GET_BALANCES, DEPOSIT, WITHDRAW, TRANSFER, ADD_NEW_TOKEN } from "../reducers/actions";
 import {
   updateBalances,
   balancesLoadingError,
@@ -21,7 +21,7 @@ import {
   approvingSuccess,
   updateTokenBalance
 } from "../reducers/balances";
-import { getCurrentToken, SET_CURRENT_TOKEN } from "../reducers/tokens";
+import { getCurrentToken } from "../reducers/tokens";
 import { zeroAddress } from "../reducers/user";
 
 import { fromEtherToWei, fromNormalTokenToBase } from "../utils";
@@ -45,7 +45,7 @@ async function getTokenBalance (web3, userAddress, tokenAddress, contractAddress
   };
 }
 
-function* getCurrentTokenWalletBalance() {
+export function* getCurrentTokenWalletBalance() {
   const providerType = yield select(state => state.web3Provider.current);
   const web3 = yield call(getWeb3[providerType]);
   const currentToken = yield select(getCurrentToken);
@@ -453,5 +453,4 @@ function* moveFunds(action) {
 export default function*() {
   yield takeEvery(GET_BALANCES, getBalances);
   yield takeEvery([DEPOSIT, WITHDRAW, TRANSFER], moveFunds);
-  yield takeEvery(SET_CURRENT_TOKEN, getCurrentTokenWalletBalance);
 }
