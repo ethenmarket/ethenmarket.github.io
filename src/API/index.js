@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import tokens from './tokens.json';
+
 const BASE_URL_API = "/api/";
 
 const request = axios.create({
@@ -15,8 +17,11 @@ export const NEW_TX_METHODS = {
 };
 
 const API = {
-  getTokenList(all = false) {
-    return request("tokens/list", { params: { all } });
+  getTokenList() {
+    const result = {
+      data: tokens
+    };
+    return result;
   },
   newTX({ method, txhash, contract, user, amount, token, nonce }) {
     if (method === NEW_TX_METHODS.TRADE) {

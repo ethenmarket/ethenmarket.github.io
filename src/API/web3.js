@@ -4,13 +4,14 @@ import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
 import ProviderEngine from "web3-provider-engine";
 import FetchSubprovider from "web3-provider-engine/subproviders/fetch";
 import { BigNumber } from 'bignumber.js';
-import axios from 'axios';
 import TX from 'ethereumjs-tx';
 import { Buffer } from 'buffer';
 import { promisify } from 'es6-promisify';
 import { privateToAddress, addHexPrefix, toBuffer, hashPersonalMessage, ecsign, toRpcSig } from 'ethereumjs-util';
 
 import networks from './networks.json';
+import ethenABI from './ABI/ethen.json';
+import erc20ABI from './ABI/ERC20.json';
 
 let ledgerWeb3 = null;
 let metaMaskWeb3 = null;
@@ -124,18 +125,15 @@ export const withDecimals = (number, decimals) => BigNumber(number).times(
 let ethenContract;
 export const getContract = async (web3, address) => {
   if (ethenContract) return ethenContract;
-  const { data } = await axios.get(`/ABI/ethen.json`);
-  const EthenContract = web3.eth.contract(data);
+  const EthenContract = web3.eth.contract(ethenABI);
   ethenContract = EthenContract.at(address);
-
   return ethenContract;
 };
 
 let ERC20Contract;
 export const getERC20Contract = async (web3, address) => {
   if (ERC20Contract) return ERC20Contract.at(address);
-  const { data } = await axios.get(`/ABI/ERC20.json`);
-  ERC20Contract = web3.eth.contract(data);
+  ERC20Contract = web3.eth.contract(erc20ABI);
   return ERC20Contract.at(address);
 };
 
