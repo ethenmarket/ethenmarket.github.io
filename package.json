@@ -56,9 +56,9 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -b master -d build"
   },
-  "homepage": "https://ethenmarket.github.io/balances/",
+  "homepage": "https://ethenmarket.github.io",
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "eslint": "^4.18.2",
