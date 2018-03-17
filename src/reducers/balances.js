@@ -13,8 +13,8 @@ export const TOGGLE_MOVE_FUNDS_MODE = 'balances/TOGGLE_MOVE_FUNDS_MODE';
 export const toggleMoveFundsMode = createAction(TOGGLE_MOVE_FUNDS_MODE);
 export const BALANCES_LOADING_ERROR = 'balances/LOADING_ERROR';
 export const balancesLoadingError = createAction(BALANCES_LOADING_ERROR);
-export const UPDATE_TOKEN_WALLET_BALANCE = 'balances/UPDATE_TOKEN_WALLET_BALANCE';
-export const updateTokenWalletBalance = createAction(UPDATE_TOKEN_WALLET_BALANCE);
+export const UPDATE_TOKEN_BALANCE = 'balances/UPDATE_TOKEN_BALANCE';
+export const updateTokenBalance = createAction(UPDATE_TOKEN_BALANCE);
 export const WAIT_APPROVING = 'balances/WAIT_APPROVING';
 export const waitApproving = createAction(WAIT_APPROVING);
 export const APPROVING_ERROR = 'balances/APPROVING_ERROR';
@@ -48,8 +48,8 @@ export default (state = initState, action) => produce(state, (draft) => {
       draft.state = STATES.defined;
       break;
     }
-    case UPDATE_TOKEN_WALLET_BALANCE: {
-      draft.tokens[action.payload.token].wallet = action.payload.amount;
+    case UPDATE_TOKEN_BALANCE: {
+      draft.tokens[action.payload.address] = action.payload.balance;
       break;
     }
     case TOGGLE_MOVE_FUNDS_MODE: {
@@ -99,7 +99,7 @@ export const getBalances = createSelector(
       total: etherTotal.toString()
     });
     Object.keys(balancesTokens)
-      .filter(tokenAddr => isNotEmptyBalances(balancesTokens[tokenAddr]))
+      // .filter(tokenAddr => isNotEmptyBalances(balancesTokens[tokenAddr]))
       .forEach(tokenAddr => {
 
         const token = tokens[tokenAddr] || { decimals: 18 };

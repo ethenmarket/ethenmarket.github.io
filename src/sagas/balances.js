@@ -18,9 +18,10 @@ import {
   balancesLoadingError,
   waitApproving,
   approvingError,
-  approvingSuccess
+  approvingSuccess,
+  updateTokenBalance
 } from "../reducers/balances";
-import { getCurrentToken } from "../reducers/tokens";
+import { getCurrentToken, SET_CURRENT_TOKEN } from "../reducers/tokens";
 import { zeroAddress } from "../reducers/user";
 
 import { fromEtherToWei, fromNormalTokenToBase } from "../utils";
@@ -42,6 +43,25 @@ async function getTokenBalance (web3, userAddress, tokenAddress, contractAddress
     wallet,
     ethen
   };
+}
+
+function* getCurrentTokenWalletBalance() {
+  const providerType = yield select(state => state.web3Provider.current);
+  const web3 = yield call(getWeb3[providerType]);
+  const currentToken = yield select(getCurrentToken);
+  const userAddress = yield select(state => state.user.address);
+  const tokenWalletBalance = yield call(
+    getTokenBalance,
+    web3,
+    userAddress,
+    currentToken.address
+  );
+  yield put(
+    updateTokenBalance({
+      address: currentToken.address,
+      balance: tokenWalletBalance
+    })
+  );
 }
 
 function* getAllTokensBalances(web3, userAddress, tokensAddresses, contractAddress) {
@@ -433,4 +453,5 @@ function* moveFunds(action) {
 export default function*() {
   yield takeEvery(GET_BALANCES, getBalances);
   yield takeEvery([DEPOSIT, WITHDRAW, TRANSFER], moveFunds);
+  yield takeEvery(SET_CURRENT_TOKEN, getCurrentTokenWalletBalance);
 }

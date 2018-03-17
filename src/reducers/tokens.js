@@ -36,6 +36,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case ADD_NEW_TOKEN: {
       const token = action.payload;
       draft.map[token.address] = token;
+      draft.addressesList.push(token.address);
       break;
     }
     case SET_CURRENT_TOKEN: {

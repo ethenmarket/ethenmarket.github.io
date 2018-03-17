@@ -3,12 +3,8 @@ import { takeEvery, put, call, select } from 'redux-saga/effects';
 import handleError from './errors';
 import API from '../API';
 import { updateTokensList, addNewToken, setCurrentToken } from '../reducers/tokens';
-import { GET_TOKENS_LIST, CURRENT_TOKEN_CHANGED, getChartData, ADD_NEW_TOKEN, getTokenOrders } from '../reducers/actions';
+import { GET_TOKENS_LIST, CURRENT_TOKEN_CHANGED, ADD_NEW_TOKEN } from '../reducers/actions';
 
-function* fetchNewTokenData() {
-  yield put(getChartData());
-  yield put(getTokenOrders());
-}
 
 function* getTokens(action) {
   try {
@@ -22,7 +18,6 @@ function* getTokens(action) {
     if (!current || !data.tokens.find(token => token.address === current)) {
       yield put(setCurrentToken({ address: data.tokens[0].address }));
     }
-    yield fetchNewTokenData();
     yield put(updateTokensList(data.tokens));
   } catch (e) {
     yield handleError(e);
@@ -33,7 +28,6 @@ function* handleCurentTokenChanged(action) {
   try {
     const address = action.payload;
     yield put(setCurrentToken({ address }));
-    yield fetchNewTokenData();
   } catch(e) {
     yield handleError(e);
   }
@@ -41,9 +35,8 @@ function* handleCurentTokenChanged(action) {
 
 function* handleAddNewToken(action) {
   try {
-    const address = action.payload;
-    const { data } = yield call(API.addNewToken, address);
-    yield put(addNewToken({ address, decimals: data.decimals }));
+    const { decimals, address } = action.payload;
+    yield put(addNewToken({ address, decimals }));
     yield put(setCurrentToken({ address }));
   } catch (e) {
     yield handleError(e);

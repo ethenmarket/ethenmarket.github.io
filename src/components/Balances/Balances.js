@@ -118,14 +118,6 @@ const getColumns = ({ onAddressClick }) => [
   {
     Header: "Total",
     accessor: "total"
-  },
-  {
-    Header: "Bid",
-    accessor: "bid"
-  },
-  {
-    Header: "Est. ETH",
-    accessor: "est"
   }
 ];
 

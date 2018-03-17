@@ -90,7 +90,7 @@ class MoveFunds extends Component {
             placeholder="0x0000000000000000000000000000000000000000"
             invalide={addressInvalid}
             onChange={this.handleAddressChange}
-            width="305px"
+            width="405px"
             style={{
               marginLeft: "20px"
             }}
