@@ -1,0 +1,5 @@
+{
+    "mainnet": "https://infura.io/vwKftuetCYx3UrQwH5gH",
+    "ropsten": "https://ropsten.infura.io/vwKftuetCYx3UrQwH5gH",
+    "local": "http://localhost:8545"
+}
