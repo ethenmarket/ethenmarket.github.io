@@ -26,6 +26,28 @@ import {
   getBalances as getBalancesAction
 } from "../../reducers/actions";
 
+const withHover = (Wrapped) => class WithHover extends Component {
+  static displayName = `withHover(${Wrapped.displayName})`
+  state = { hover: false }
+  hoverOn = () => {
+    this.setState({ hover: true });
+  }
+  hoverOff = () => {
+    this.setState({ hover: false });
+  }
+  render() {
+    return (
+      <div
+        style={{ height: '100%' }}
+        onMouseEnter={this.hoverOn}
+        onMouseLeave={this.hoverOff}
+      >
+        <Wrapped hover={this.state.hover} {...this.props} />
+      </div>
+    );
+  }
+};
+
 const LoadingTable = Loading(Table);
 
 const NameCellChild = styled.span`
@@ -36,7 +58,7 @@ const NameCellChild = styled.span`
   text-align: left;
 `;
 
-const NameCell = styled.div`
+const NameCellStyled = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -66,6 +88,13 @@ const NameCell = styled.div`
   }
 `;
 
+
+const NameCell = ({ hover, address, name }) => (
+  <NameCellStyled address={address} >
+    <NameCellChild>{hover ? (address || name) : name}</NameCellChild>
+  </NameCellStyled>
+);
+
 const NameCellWrap = styled.div`
   position: relative;
   width: 100%;
@@ -83,6 +112,8 @@ export const balancesCompare = (a, b, invert) => {
   return a > b ? 1 : -1;
 };
 
+const NameCellWithHover = withHover(NameCell);
+
 const getColumns = ({ onAddressClick }) => [
   {
     Header: "Token",
@@ -93,16 +124,11 @@ const getColumns = ({ onAddressClick }) => [
       <CopyToClipboard
         text={datum.name}
         onCopy={() => {
-          const isAddress = datum.name && datum.name.length === 42;
-          if (isAddress) {
-            onAddressClick(datum.name);
-          }
+          onAddressClick(datum.address);
         }}
       >
         <NameCellWrap>
-          <NameCell address={datum.name && datum.name.length === 42}>
-            <NameCellChild>{datum.name}</NameCellChild>
-          </NameCell>
+          <NameCellWithHover name={datum.name} address={datum.address} />
         </NameCellWrap>
       </CopyToClipboard>
     )

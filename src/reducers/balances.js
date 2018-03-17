@@ -109,6 +109,7 @@ export const getBalances = createSelector(
         const tokenTotal = tokenWallet.plus(tokenEthen);
         result.push({
           name: token.symbol || token.address,
+          address: token.address,
           wallet: tokenWallet.toString(),
           ethen: tokenEthen.toString(),
           total: tokenTotal.toString()
