@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import createSagaMiddleware from 'redux-saga';
 import { connectRoutes } from 'redux-first-router';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 
 import rootSaga from '../sagas';
 import reducers from '../reducers';
