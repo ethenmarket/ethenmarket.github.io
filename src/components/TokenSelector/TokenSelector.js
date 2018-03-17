@@ -22,8 +22,6 @@ import {
   NotVerified
 } from "./styled";
 
-import { Star as StarButton } from '../share';
-
 function renderValueComponent(props) {
   const { children } = props;
   return (
@@ -37,18 +35,15 @@ function renderValueComponent(props) {
 
 class RenderOptionComponent extends Component {
   render() {
-    const { stared, verified, label, value } = this.props.option;
-
-    const starColor = stared ? "#0e995f" : "#eaeaea";
+    const { verified, label, value } = this.props.option;
     return (
       <ValueWrapper>
-        <StarButton color={starColor} width={15} height={15} onClick={console.log} />
         <TokenTickerWrapper
           onClick={() => {
             this.props.selectValue(value);
           }}
         >
-          <TokenTicker title={label} stared={stared}>
+          <TokenTicker title={label}>
             {this.props.children}
           </TokenTicker>
           {!verified && <NotVerified>not verified</NotVerified>}
