@@ -122,7 +122,7 @@ const getColumns = ({ onAddressClick }) => [
     comparator: balancesCompare,
     renderCell: datum => (
       <CopyToClipboard
-        text={datum.address}
+        text={datum.address || datum.name}
         onCopy={() => {
           onAddressClick(datum.address);
         }}
