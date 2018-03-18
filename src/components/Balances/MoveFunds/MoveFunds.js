@@ -54,7 +54,8 @@ class MoveFunds extends Component {
     const amountInvalid =
       !isFloat(amount) ||
       BigNumber(amount).isZero() ||
-      BigNumber(amount).isNegative();
+      BigNumber(amount).isNegative() ||
+      BigNumber(amount).gt(this.props.maxAmount);
     const addressInvalid =
       this.props.type === MOVE_FUNDS_TYPES.TRANSFER && !isValidAddress(address);
     if (amountInvalid || addressInvalid) {
@@ -71,7 +72,7 @@ class MoveFunds extends Component {
   };
 
   handleMaxButtonClick = () => {
-    this.setState({ amount: this.props.maxAmount });
+    this.setState({ amount: this.props.maxAmount, amountInvalid: false });
   }
 
   render() {
