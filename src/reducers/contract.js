@@ -1,6 +1,6 @@
 const initState = {
-  current: '0x7de64d33d1393891df95a267c54417d566aea0a4',
-  list: ['0x7de64d33d1393891df95a267c54417d566aea0a4']
+  current: '0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d',
+  list: ['0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d']
 };
 
 export default (state = initState) => state;

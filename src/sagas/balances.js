@@ -12,7 +12,7 @@ import getWeb3, {
   sendRawTransaction
 } from "../API/web3";
 
-import { GET_BALANCES, DEPOSIT, WITHDRAW, TRANSFER, ADD_NEW_TOKEN } from "../reducers/actions";
+import { GET_BALANCES, DEPOSIT, WITHDRAW, TRANSFER } from "../reducers/actions";
 import {
   updateBalances,
   balancesLoadingError,
