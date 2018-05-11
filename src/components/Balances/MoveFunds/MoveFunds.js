@@ -9,7 +9,7 @@ import { withPadding } from '../../../styles';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: ${props => props.transfer ? "auto 1fr auto auto" : "repeat(4, auto)"};
+  grid-template-columns: repeat(4, auto);
   justify-content: left;
   margin: 15px 0;
   ${withPadding()}
@@ -103,7 +103,7 @@ class MoveFunds extends Component {
     const { amount, address, amountInvalid, addressInvalid } = this.state;
     const isTransfer = type === MOVE_FUNDS_TYPES.TRANSFER;
     return (
-      <Wrapper transfer={isTransfer}>
+      <Wrapper>
         <Input
           validate={val => isFloat(val.toString()) || val === ""}
           value={amount}
@@ -120,7 +120,7 @@ class MoveFunds extends Component {
             placeholder="0x0000000000000000000000000000000000000000"
             invalide={addressInvalid}
             onChange={this.handleAddressChange}
-            width="calc(100% - 0px)"
+            width="500px"
             style={{
               marginLeft: "10px"
             }}
