@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ethen FAQ</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./styles/fonts/stylesheet.css">
+<style>html,
+        body {
+            width: 100%;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(97, 118, 139);
+            height: 60px;
+        }
+
+        .logo {
+
+            padding-left: 5%;
+        }
+
+        .logo img {
+            height: 24px;
+            display: inline-block;
+            margin-top: 3px;
+        }
+
+        body {
+
+            font-family: 'Gotham Pro';
+
+            background-color: #232D37;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        main {
+            padding: 0 5%;
+            box-sizing: border-box;
+            width: 90%;
+            height: calc(100vh - 85px);
+        }
+
+        a.link {
+            color: rgb(19, 180, 206);
+            text-decoration: none;
+        }
+
+        a.inner {
+            color: white;
+            text-decoration: none;
+        }
+
+        a.inner:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            /* font-weight: normal; */
+        }
+
+        .answer {
+            width: 60%;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .gif {
+            width: 100%;
+        }
+
+
+        .ss-wrapper {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            float: left;
+        }
+
+        .ss-content {
+            height: 100%;
+            width: calc(100% + 18px);
+            padding: 0 0 0 0;
+            position: relative;
+            overflow: auto;
+            box-sizing: border-box;
+        }
+
+        .ss-content.rtl {
+            width: calc(100% + 18px);
+            right: auto;
+        }
+
+        .ss-scroll {
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            width: 9px;
+            border-radius: 4px;
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s linear;
+        }
+
+        .ss-hidden {
+            display: none;
+        }
+
+        .ss-container:hover .ss-scroll,
+        .ss-container:active .ss-scroll {
+            opacity: 1;
+        }
+
+        .ss-grabbed {
+            -o-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }</style>
+<script>!function (t, e) { "object" == typeof exports ? module.exports = e(window, document) : t.SimpleScrollbar = e(window, document) }(this, function (t, e) { function s(t) { Object.prototype.hasOwnProperty.call(t, "data-simple-scrollbar") || Object.defineProperty(t, "data-simple-scrollbar", { value: new o(t) }) } function i(t, s) { function i(t) { var e = t.pageY - a; a = t.pageY, n(function () { s.el.scrollTop += e / s.scrollRatio }) } function r() { t.classList.remove("ss-grabbed"), e.body.classList.remove("ss-grabbed"), e.removeEventListener("mousemove", i), e.removeEventListener("mouseup", r) } var a; t.addEventListener("mousedown", function (s) { return a = s.pageY, t.classList.add("ss-grabbed"), e.body.classList.add("ss-grabbed"), e.addEventListener("mousemove", i), e.addEventListener("mouseup", r), !1 }) } function r(t) { for (this.target = t, this.direction = window.getComputedStyle(this.target).direction, this.bar = '<div class="ss-scroll">', this.wrapper = e.createElement("div"), this.wrapper.setAttribute("class", "ss-wrapper"), this.el = e.createElement("div"), this.el.setAttribute("class", "ss-content"), "rtl" === this.direction && this.el.classList.add("rtl"), this.wrapper.appendChild(this.el); this.target.firstChild;)this.el.appendChild(this.target.firstChild); this.target.appendChild(this.wrapper), this.target.insertAdjacentHTML("beforeend", this.bar), this.bar = this.target.lastChild, i(this.bar, this), this.moveBar(), this.el.addEventListener("scroll", this.moveBar.bind(this)), this.el.addEventListener("mouseenter", this.moveBar.bind(this)), this.target.classList.add("ss-container"); var s = window.getComputedStyle(t); "0px" === s.height && "0px" !== s["max-height"] && (t.style.height = s["max-height"]) } function a() { for (var t = e.querySelectorAll("*[ss-container]"), i = 0; i < t.length; i++)s(t[i]) } var n = t.requestAnimationFrame || t.setImmediate || function (t) { return setTimeout(t, 0) }; r.prototype = { moveBar: function (t) { var e = this.el.scrollHeight, s = this.el.clientHeight, i = this; this.scrollRatio = s / e; var r = "rtl" === i.direction, a = r ? i.target.clientWidth - i.bar.clientWidth + 18 : -1 * (i.target.clientWidth - i.bar.clientWidth); n(function () { i.scrollRatio >= 1 ? i.bar.classList.add("ss-hidden") : (i.bar.classList.remove("ss-hidden"), i.bar.style.cssText = "height:" + Math.max(100 * i.scrollRatio, 10) + "%; top:" + i.el.scrollTop / e * 100 + "%;right:" + a + "px;") }) } }, e.addEventListener("DOMContentLoaded", a), r.initEl = s, r.initAll = a; var o = r; return o });
+</script>
+</head>
+<body>
+<header>
+<a class="logo" href="https://ethen.market"><img src="./img/logo.svg" /></a>
+</header>
+<main class="scroll"><a class="inner" href="#contact"><h2 id="contact">¿Cómo ponerse en contacto con el servicio de soporte?</h2></a><div class="answer">Si tiene algún problema mientras usa el sitio, envíe una descripción del problema al chat de Telegram
+<a class="link" href="https://t.me/ethen_market">https://t.me/ethen_market</a>.<br/>Para otro tipo de consultas, puede ponerse en contacto con nosotros escribiéndonos a
+<a class="link" href="mailto:info@ethen.market">info@ethen.market</a>.</div><a class="inner" href="#start"><h2 id="start">¿Cómo empezar a operar y depositar fondos en Ethen?</h2></a><div class="answer">Consulte la guía para principiantes para familiarizarse con las funciones básicas de Ethen.<br/>Deposite fondos en el contrato inteligente de Ethen desde su cartera personal. La cartera se detectará automáticamente si está conectada cuando accede al sitio.<br/>También puede pegar su clave privada directamente en el campo de dirección de la cartera.<img class="gif" src="./media-faq/en/eth_deposit.gif" alt="Deposit ETH"/></div><a class="inner" href="#withdraw"><h2 id="withdraw">¿Cómo hacer una retirada?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/eth_withdraw.gif" alt="Withdraw ETH"/></div><a class="inner" href="#place"><h2 id="place">¿Cómo encontrar órdenes al mejor precio?</h2></a><div class="answer">Al pulsar el botón Comprar/Vender y enviar la orden al servidor, este buscará automáticamente la mejor coincidencia (que podría no ser necesariamente la misma orden que eligió en la cartera de órdenes) y le ofrecerá lo siguiente:<ol><li>Órdenes actualmente disponibles con un precio menor o igual que el de su orden de compra (empezando por la más baja).</li><li>Órdenes actualmente disponibles con un precio mayor o igual que el de su orden de venta (empezando por la más alta).</li></ol></div><a class="inner" href="#buy_sell"><h2 id="buy_sell">¿Cómo comprar y vender en Ethen?</h2></a><div class="answer">Asegúrese de que su cartera está conectada y seleccione el token con el que desea operar.
+Especifique la cantidad, el precio máximo/mínimo y la fecha de caducidad de su orden, o haga clic en una orden de la cartera de órdenes para pegar los valores.
+Si no hay activos suficientes al precio indicado o si no hay ningún comprador para la cantidad total que desea vender, la orden se ejecutará parcialmente a los mejores precios disponibles. Parte de la orden permanecerá en la cartera de órdenes hasta que se ejecute o caduque.<img class="gif" src="./media-faq/en/sell.gif" alt="Sell example"/></div><a class="inner" href="#cancel_order"><h2 id="cancel_order">¿Cómo cancelar una orden abierta?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/cancel_order.gif" alt="Cancel order"/></div><a class="inner" href="#new_token">¿Cómo enviar un token a Ethen para que quede listada?</a><div class="answer"><img class="gif" src="./media-faq/en/new_token.gif" alt="New token"/></div><a class="inner" href="#gas_price"><h2 id="gas_price">¿Cómo definir el precio del gas?</h2></a><div class="answer">El precio recomendado del gas lo establece Ethen. Puede cambiarlo aquí:<img class="gif" src="./media-faq/en/gas.gif" alt="Set gas price"/></div><a class="inner" href="#wallets"><h2 id="wallets">¿Qué carteras son compatibles con la plataforma de Ethen?</h2></a><div class="answer">Recomendamos usar el complemento MetaMask o la cartera de hardware Ledger Nano S para disfrutar de una experiencia cómoda y segura. Lea las instrucciones para
+<a class="link" href="#metamask">instalar la extensión MetaMask</a>
+o
+<a class="link" href="#ledger">conectar su dispositivo Ledger.</a><br/>También puede operar en Ethen con cualquier cartera de Ethereum usando su clave privada. Aunque Ethen no almacena sus claves privadas, no se recomienda usar este método. Al copiar la clave privada en un portapapeles, sus fondos podrían ser robados en caso de un ataque al sitio, si visita un sitio web de phishing por accidente o si su equipo tiene malware capaz de robar los datos del portapapeles.<img class="gif" src="./media-faq/en/use_pk.gif" alt="Use private key"/></div><a class="inner" href="#metamask"><h2 id="metamask">¿Cómo conectar MetaMask?</h2></a><div class="answer"><ul><li>Instale
+<a class="link" href="https://metamask.io/">MetaMask</a>
+y asegúrese de que la extensión está habilitada en el navegador.</li><li>Haga clic en el icono de la extensión en el navegador para importar el almacenamiento existente en MetaMask o cree uno nuevo.</li><li>Vuelva a cargar la página
+<a class="link" href="https://ethen.market">https://ethen.market</a>
+.
+La cartera se detectará automáticamente en la barra superior. Si previamente utilizaba una cartera diferente, seleccione MetaMask en el menú desplegable.</li></ul></div><a class="inner" href="#ledger"><h2 id="ledger">¿Cómo conectar una cartera Ledger Nano?</h2></a><div class="answer"><ul><li>Instale
+<a class="link" href="https://www.ledgerwallet.com/apps/ethereum">la aplicación Ledger Wallet Ethereum</a>
+en su dispositivo Ledger</li><li>En los ajustes de la aplicación Ledger Wallet Ethereum seleccione Yes (Sí) en Contract data (Datos del contrato) y Browser support (Compatibilidad con navegadores).</li><li>Conecte el dispositivo Ledger a su ordenador.</li><li>Abra la aplicación Ledger Wallet Ethereum en su dispositivo.</li><li>Seleccione la cartera Ledger Nano S en
+<a class="link" href="https://ethen.market">https://ethen.market</a></li></ul></div><a class="inner" href="#contract_link"><h2 id="contract_link">¿Dónde se encuentra el código fuente del contrato de Ethen?</h2></a><div class="answer"><a class="link" href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code">https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code</a></div><a class="inner" href="#unavailable"><h2 id="unavailable">¿Qué puedo hacer si el sitio no está disponible y no puedo retirar fondos?</h2></a><div class="answer">El código para retirar fondos es de fuente abierta y está disponible en
+<a class="link" href="https://ethenmarket.github.io/">https://ethenmarket.github.io/</a></div><a class="inner" href="#how_long_withdrawl"><h2 id="how_long_withdrawl">¿Cuánto tardan en procesarse los depósitos y retiradas?</h2></a><div class="answer">Depende de la carga de la red de Ethereum en el momento de la transacción. Normalmente suele tardar entre 14 segundos y 2 minutos.</div><a class="inner" href="#withdrawal_limit"><h2 id="withdrawal_limit">¿Hay algún límite de retirada?</h2></a><div class="answer">No hay límites de retirada en Ethen.</div><a class="inner" href="#how_long_trade"><h2 id="how_long_trade">¿Cuánto tarda en realizarse una operación?</h2></a><div class="answer">El tiempo máximo es de 5 minutos. Transcurridos 5 minutos, la operación se cancelará automáticamente.</div><a class="inner" href="#edit_order"><h2 id="edit_order">¿Es posible modificar una orden?</h2></a><div class="answer">No se pueden cambiar los detalles de una orden una vez emitida. Vaya a Operaciones > Órdenes para cancelar una orden abierta y crear una nueva.</div><a class="inner" href="#is_safe"><h2 id="is_safe">¿Es Ethen seguro?</h2></a><div class="answer">Tomamos una serie de medidas para optimizar la seguridad de sus fondos en Ethen:<ul><li>No se crean cuentas de usuario en el intercambio, lo que significa que no es posible acceder a una cartera mediante la clave privada y no hay espacio donde guardar información personal.</li><li>Los fondos que se envían al contrato inteligente de Ethen se verifican mediante dos firmas digitales para garantizar que la información de la transacción es correcta e imposible de modificar.</li><li>El código para retirar fondos es de fuente abierta y está disponible en Github por si el sitio principal no estuviera disponible.</li></ul></div><a class="inner" href="#fees_and_limits"><h2 id="fees_and_limits">¿Cuáles son las tarifas y los límites de operaciones?</h2></a><div class="answer">Solo se cobran tarifas cuando se ejecutan órdenes de venta/compra.<br/>Tarifa del emisor: 0 %.<br/>Tarifa del receptor: 0,25 %.</div><a class="inner" href="#order_size"><h2 id="order_size">¿Existe un importe mínimo o máximo por orden?</h2></a><div class="answer">El importe mínimo de una orden es de 0,001 ETH. No hay importe máximo en Ethen.</div><a class="inner" href="#gas"><h2 id="gas">¿Cuándo se paga gas?</h2></a><div class="answer">El gas es una tarifa de ejecución por cada operación realizada en la cadena de bloques de Ethereum. Esta tarifa se dirige a la persona que mina el bloque.<br/>Se paga gas cada vez que se envía una transacción a la cadena de bloques de Ethereum, así como cuando se ejecuta una operación y se envían tokens o ETH de su cartera o a esta.<br/>No se paga gas por crear una orden de compra o venta, que no se puede combinar inmediatamente y se envía a la cartera de órdenes.<br/>Tenga en cuenta que el gas necesario para cada transacción se carga siempre a su cartera personal. Asegúrese de que tiene fondos suficientes para satisfacer el gas al realizar un depósito para Ethen.</div></main>
+<script>var scroll = document.querySelector('.scroll');
+SimpleScrollbar.initEl(scroll);
+if (location.hash) {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el) {
+        el.scrollIntoView();
+    }
+}</script>
+</body>
+</html>

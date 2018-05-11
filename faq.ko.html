@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ethen FAQ</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./styles/fonts/stylesheet.css">
+<style>html,
+        body {
+            width: 100%;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(97, 118, 139);
+            height: 60px;
+        }
+
+        .logo {
+
+            padding-left: 5%;
+        }
+
+        .logo img {
+            height: 24px;
+            display: inline-block;
+            margin-top: 3px;
+        }
+
+        body {
+
+            font-family: 'Gotham Pro';
+
+            background-color: #232D37;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        main {
+            padding: 0 5%;
+            box-sizing: border-box;
+            width: 90%;
+            height: calc(100vh - 85px);
+        }
+
+        a.link {
+            color: rgb(19, 180, 206);
+            text-decoration: none;
+        }
+
+        a.inner {
+            color: white;
+            text-decoration: none;
+        }
+
+        a.inner:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            /* font-weight: normal; */
+        }
+
+        .answer {
+            width: 60%;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .gif {
+            width: 100%;
+        }
+
+
+        .ss-wrapper {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            float: left;
+        }
+
+        .ss-content {
+            height: 100%;
+            width: calc(100% + 18px);
+            padding: 0 0 0 0;
+            position: relative;
+            overflow: auto;
+            box-sizing: border-box;
+        }
+
+        .ss-content.rtl {
+            width: calc(100% + 18px);
+            right: auto;
+        }
+
+        .ss-scroll {
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            width: 9px;
+            border-radius: 4px;
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s linear;
+        }
+
+        .ss-hidden {
+            display: none;
+        }
+
+        .ss-container:hover .ss-scroll,
+        .ss-container:active .ss-scroll {
+            opacity: 1;
+        }
+
+        .ss-grabbed {
+            -o-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }</style>
+<script>!function (t, e) { "object" == typeof exports ? module.exports = e(window, document) : t.SimpleScrollbar = e(window, document) }(this, function (t, e) { function s(t) { Object.prototype.hasOwnProperty.call(t, "data-simple-scrollbar") || Object.defineProperty(t, "data-simple-scrollbar", { value: new o(t) }) } function i(t, s) { function i(t) { var e = t.pageY - a; a = t.pageY, n(function () { s.el.scrollTop += e / s.scrollRatio }) } function r() { t.classList.remove("ss-grabbed"), e.body.classList.remove("ss-grabbed"), e.removeEventListener("mousemove", i), e.removeEventListener("mouseup", r) } var a; t.addEventListener("mousedown", function (s) { return a = s.pageY, t.classList.add("ss-grabbed"), e.body.classList.add("ss-grabbed"), e.addEventListener("mousemove", i), e.addEventListener("mouseup", r), !1 }) } function r(t) { for (this.target = t, this.direction = window.getComputedStyle(this.target).direction, this.bar = '<div class="ss-scroll">', this.wrapper = e.createElement("div"), this.wrapper.setAttribute("class", "ss-wrapper"), this.el = e.createElement("div"), this.el.setAttribute("class", "ss-content"), "rtl" === this.direction && this.el.classList.add("rtl"), this.wrapper.appendChild(this.el); this.target.firstChild;)this.el.appendChild(this.target.firstChild); this.target.appendChild(this.wrapper), this.target.insertAdjacentHTML("beforeend", this.bar), this.bar = this.target.lastChild, i(this.bar, this), this.moveBar(), this.el.addEventListener("scroll", this.moveBar.bind(this)), this.el.addEventListener("mouseenter", this.moveBar.bind(this)), this.target.classList.add("ss-container"); var s = window.getComputedStyle(t); "0px" === s.height && "0px" !== s["max-height"] && (t.style.height = s["max-height"]) } function a() { for (var t = e.querySelectorAll("*[ss-container]"), i = 0; i < t.length; i++)s(t[i]) } var n = t.requestAnimationFrame || t.setImmediate || function (t) { return setTimeout(t, 0) }; r.prototype = { moveBar: function (t) { var e = this.el.scrollHeight, s = this.el.clientHeight, i = this; this.scrollRatio = s / e; var r = "rtl" === i.direction, a = r ? i.target.clientWidth - i.bar.clientWidth + 18 : -1 * (i.target.clientWidth - i.bar.clientWidth); n(function () { i.scrollRatio >= 1 ? i.bar.classList.add("ss-hidden") : (i.bar.classList.remove("ss-hidden"), i.bar.style.cssText = "height:" + Math.max(100 * i.scrollRatio, 10) + "%; top:" + i.el.scrollTop / e * 100 + "%;right:" + a + "px;") }) } }, e.addEventListener("DOMContentLoaded", a), r.initEl = s, r.initAll = a; var o = r; return o });
+</script>
+</head>
+<body>
+<header>
+<a class="logo" href="https://ethen.market"><img src="./img/logo.svg" /></a>
+</header>
+<main class="scroll"><a class="inner" href="#contact"><h2 id="contact">어떻게 지원 부서에 연락할 수 있습니까?</h2></a><div class="answer">사용 중 문제가 발생하면 텔레그램 챗
+<a class="link" href="https://t.me/ethen_market">https://t.me/ethen_market</a>
+을 이용하시기 바랍니다..<br/>다른 문의 사항은
+<a class="link" href="mailto:info@ethen.market">info@ethen.market</a>을 이용해 주십시오.</div><a class="inner" href="#start"><h2 id="start">어떻게 Ethen에서 거래를 시작하고 자금을 예치합니까?</h2></a><div class="answer">Ethen의 기본 기능에 익숙해 지려면 입문자용 설명서를 참조하시기 바랍니다.<br/>결되어 있으면 자동으로 감지됩니다. 또는 개인 키를 월렛 주소 필드에 직접 붙여 넣기 하는 방법도 있습니다.<img class="gif" src="./media-faq/en/eth_deposit.gif" alt="Deposit ETH"/></div><a class="inner" href="#withdraw"><h2 id="withdraw">어떻게 인출할 수 있습니까?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/eth_withdraw.gif" alt="Withdraw ETH"/></div><a class="inner" href="#place"><h2 id="place">어떻게 가장 최적 가격의 주문을 찾을 수 있습니까?</h2></a><div class="answer">‘구매’/’판매’ 버튼을 클릭하고 서버상에 주문을 전송하면 자동으로 최상의 가격대의 주문(주문 대장에서 선택한 주문과 동일하지 않을 수도 있음)을 찾아 귀하에게 제공합니다:<ol><li>현재 ‘구매’ 가능한 가격 보다 낮거나 같은 가격의 주문(가장 낮은 가격부터 시작);</li><li>귀하의 ‘매도’ 가능한 가격 보다 높거나 같은 가격의 주문 (가장 높은 가격부터 시작);</li></ol></div><a class="inner" href="#buy_sell"><h2 id="buy_sell">어떻게 Ethen상에서 사고 팝니까?</h2></a><div class="answer">월렛이 연결되어 있는지 확인하고 거래하고자 하는 토큰을 선택하시기 바랍니다.<br/>주문 금액, 최대/최소 가격 및 만료일을 입력하거나 주문서상에서 주문을 클릭하여 값을 기입하십시오.<br/>귀하가 설정한 가격에 비해 자산이 충분하지 않거나 팔고자 하는 전체 자산에 대한 구매자가 없는 경우, 주문은 이용 가능한 최적의 가격으로 부분적으로 진행됩니다. 주문의 일부는 주문이 실행되거나 만료될 때까지 주문서에 남아 있습니다.<img class="gif" src="./media-faq/en/sell.gif" alt="Sell example"/></div><a class="inner" href="#cancel_order"><h2 id="cancel_order">미 체결된 주문은 어떻게 취소합니까?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/cancel_order.gif" alt="Cancel order"/></div><a class="inner" href="#new_token"><h2 id="new_token">리스팅을 위해 어떻게 Ethen상에 토큰을 전송합니까?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/new_token.gif" alt="New token"/></div><a class="inner" href="#gas_price"><h2 id="gas_price">가스 가격은 어떻게 설정합니까?</h2></a><div class="answer">권장 가스 가격은 Ethen에 의해 설정되며 주문의 ‘총 ETH’ 필드상에 포함됩니다. 따라서 여기를 통해 변경할 수 있습니다:<img class="gif" src="./media-faq/en/gas.gif" alt="Set gas price"/></div><a class="inner" href="#gas_price"><h2 id="gas_price">가스 가격은 어떻게 설정합니까?</h2></a><div class="answer">권장 가스 가격은 Ethen에 의해 설정되며 주문의 ‘총 ETH’ 필드상에 포함됩니다. 따라서 여기를 통해 변경할 수 있습니다.</div><a class="inner" href="#wallets"><h2 id="wallets">어떤 월렛이 Ethen 플랫폼과 호환됩니까?</h2></a><div class="answer">편리하고 안전한 사용자 환경을 위해 MetaMask 애드 온 또는 Ledger Nano S 하드웨어 월렛을 사용하는 것이 권장됩니다
+<a class="link" href="#metamask">MetaMask 확장 설치 방법</a>
+및
+<a class="link" href="#ledger">Ledger 장치 연결 방법을</a>
+참조하시기 바랍니다<br/>이 뿐만이 아니라, Ethen에서는 개인 키를 사용하여 어떤 이더리움(Ethereum) 월렛으로도 거래가 가능합니다. Ethen은 개인 키를 저장하지 않지만 이 방법은 권장하지 않습니다. 개인 키를 클립 보드상으로 복사하는 것은 사이트가 손상되거나, 실수로 피싱 웹 사이트에 접속하거나, 컴퓨터상에 클립 보드 데이터를 도용하는 악성 코드가 심어져 있는 경우 자금을 도난 당할 위험이 있습니다.<img class="gif" src="./media-faq/en/use_pk.gif" alt="Use private key"/></div><a class="inner" href="#metamask"><h2 id="metamask">어떻게 MetaMask에 연결할 수 있습니까?</h2></a><div class="answer"><ul><li><a class="link" href="https://metamask.io/">MetaMask</a>
+를 설치하고 브라우저상에서 확장 기능이 활성화 되어 있는지 확인하십시오.</li><li>브라우저에서 확장 아이콘을 클릭하여 MetaMask의 기존 스토리지를 가져오거나 새 스토리지를 생성하십시오.</li><li><a class="link" href="https://ethen.market">https://ethen.market</a>
+페이지를 새로고침 하시기 바랍니다. 귀하의 월렛은 상단 표시줄에서 자동으로 감지 됩니다. 이전에 다른 월렛을 사용 중이였다면 드롭 다운 메뉴에서 MetaMask를 선택하십시오.</li></ul></div><a class="inner" href="#ledger"><h2 id="ledger">어떻게 Ledger Nano 월렛을 연결합니까?</h2></a><div class="answer"><ul><li><a class="link" href="https://www.ledgerwallet.com/apps/ethereum">Ledger Wallet Ethereum</a>
+앱을 귀하의 Ledger 장치 상에 설치합니다I</li><li>Ledger Wallet Ethereum 앱의 설정에서 ‘계약 데이터’ 및 ‘브라우저 지원’을 ‘예’로 지정합니다</li><li>Ledger 장치를 컴퓨터상에 연결하십시오</li><li>귀하의 기기에서 Ledger Wallet Ethereum 앱을 열도록 하십시오.</li></ul></div><a class="inner" href="#contract_link"><h2 id="contract_link">어디서 Ethen 컨트렉트 소스 코드를 찾을 수 있나요?</h2></a><div class="answer"><a class="link" href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code">https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code</a></div><a class="inner" href="#unavailable"><h2 id="unavailable">사이트를 사용할 수 없고 자금 인출이 불가한 경우에는 어떻게 해야 합니까?</h2></a><div class="answer">자금을 인출하는 코드는 오픈 소스이며 본 페이지상에 개시되어 있습니다.
+<a class="link" href="https://ethenmarket.github.io/">https://ethenmarket.github.io/</a></div><a class="inner" href="#how_long_withdrawl"><h2 id="how_long_withdrawl">입금 및 인출에 따른 기간은 얼마나 소요됩니까?</h2></a><div class="answer">이는 거래 시점의 이더리움 네트워크 부하에 달려 있으며 일반적으로 14초에서 2분 정도가 소요됩니다.</div><a class="inner" href="#withdrawal_limit"><h2 id="withdrawal_limit">출금 한도가 있습니까?</h2></a><div class="answer">Ethen상에는 출금 제한이 없습니다.</div><a class="inner" href="#how_long_trade"><h2 id="how_long_trade">거래는 얼마나 걸립니까?</h2></a><div class="answer">시간 제한은 5분입니다. 5분 후에 거래가 자동으로 취소됩니다.</div><a class="inner" href="#edit_order"><h2 id="edit_order">주문은 편집 및 수정할 수 있습니까?</h2></a><div class="answer">주문 세부 정보를 제출한 후에는 변경할 수 없습니다. 거래> 주문으로 이동하여 미 치결 주문을 취소하고 새 주문을 생성하시기 바랍니다.</div><a class="inner" href="#is_safe"><h2 id="is_safe">Ethen은 안전한가요?</h2></a><div class="answer">Ethen에서 귀하의 자금의 안전을 극대화하기 위하여 취할 수 있는 조치는 다음과 같습니다:<ul><li>개인 키를 사용하거나 개인 정보를 저장할 장소가 없는 경우 사용자 계정을 생성할 수 없습니다.</li><li>Ethen 스마트 계약상으로 송금된 자금은 거래 정보가 정확하고 변경할 수 없음을 보장하는 두 개의 전자 서명으로 검증 및 입증됩니다.</li><li>자금을 인출하는 코드는 오픈 소스이며 메인 사이트를 이용할 수 없는 경우 Github상에 게시됩니다.</li></ul></div><a class="inner" href="#fees_and_limits"><h2 id="fees_and_limits">수수료 및 거래 한도는 어떻게 됩니까?</h2></a><div class="answer">판매/구매 주문을 실행할 때만 수수료를 지불합니다.<br/>메이커(Maker) 수수료- 0%<br/>테이커(Taker) 수수료- 0.25%</div><a class="inner" href="#order_size"><h2 id="order_size">최소 또는 최대 주문량이 있습니까?</h2></a><div class="answer">최소 주문량은 0.001 ETH입니다 Ethen상에 있어 최대 주문량의 제한은 없습니다.</div><a class="inner" href="#gas"><h2 id="gas">언제 gas를 지불합니까?</h2></a><div class="answer">Gas는 이더리움 블록 체인상에서 이루어지는 모든 작업에 대한 이행 수수료입니다. 이 수수료는 귀하의 불록을 채굴하는 광부에게 지급됩니다.<br/>토큰 또는 ETH을 월렛 상에서 송금하는 등의 이더리움 블록체인 거래를 성사할 때마다 언제든지 Gas가 지불됩니다.<br/>구매/판매 주문을 작성하는 데에는 가스를 지불하지 않습니다. 판매 주문은 즉시 채결되지 않는 경우 주문 원장으로 전송됩니다.<br/>각 거래에 필요한 가스는 항상 개인 월렛에 부과됩니다. Ethen에 입금할 때에는 가스에 필요한 충분한 자금이 남아 있는 지 확인하시기 바랍니다.</div></main>
+<script>var scroll = document.querySelector('.scroll');
+SimpleScrollbar.initEl(scroll);
+if (location.hash) {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el) {
+        el.scrollIntoView();
+    }
+}</script>
+</body>
+</html>

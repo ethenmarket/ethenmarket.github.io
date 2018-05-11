@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ethen FAQ</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./styles/fonts/stylesheet.css">
+<style>html,
+        body {
+            width: 100%;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(97, 118, 139);
+            height: 60px;
+        }
+
+        .logo {
+
+            padding-left: 5%;
+        }
+
+        .logo img {
+            height: 24px;
+            display: inline-block;
+            margin-top: 3px;
+        }
+
+        body {
+
+            font-family: 'Gotham Pro';
+
+            background-color: #232D37;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        main {
+            padding: 0 5%;
+            box-sizing: border-box;
+            width: 90%;
+            height: calc(100vh - 85px);
+        }
+
+        a.link {
+            color: rgb(19, 180, 206);
+            text-decoration: none;
+        }
+
+        a.inner {
+            color: white;
+            text-decoration: none;
+        }
+
+        a.inner:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            /* font-weight: normal; */
+        }
+
+        .answer {
+            width: 60%;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .gif {
+            width: 100%;
+        }
+
+
+        .ss-wrapper {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            float: left;
+        }
+
+        .ss-content {
+            height: 100%;
+            width: calc(100% + 18px);
+            padding: 0 0 0 0;
+            position: relative;
+            overflow: auto;
+            box-sizing: border-box;
+        }
+
+        .ss-content.rtl {
+            width: calc(100% + 18px);
+            right: auto;
+        }
+
+        .ss-scroll {
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            width: 9px;
+            border-radius: 4px;
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s linear;
+        }
+
+        .ss-hidden {
+            display: none;
+        }
+
+        .ss-container:hover .ss-scroll,
+        .ss-container:active .ss-scroll {
+            opacity: 1;
+        }
+
+        .ss-grabbed {
+            -o-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }</style>
+<script>!function (t, e) { "object" == typeof exports ? module.exports = e(window, document) : t.SimpleScrollbar = e(window, document) }(this, function (t, e) { function s(t) { Object.prototype.hasOwnProperty.call(t, "data-simple-scrollbar") || Object.defineProperty(t, "data-simple-scrollbar", { value: new o(t) }) } function i(t, s) { function i(t) { var e = t.pageY - a; a = t.pageY, n(function () { s.el.scrollTop += e / s.scrollRatio }) } function r() { t.classList.remove("ss-grabbed"), e.body.classList.remove("ss-grabbed"), e.removeEventListener("mousemove", i), e.removeEventListener("mouseup", r) } var a; t.addEventListener("mousedown", function (s) { return a = s.pageY, t.classList.add("ss-grabbed"), e.body.classList.add("ss-grabbed"), e.addEventListener("mousemove", i), e.addEventListener("mouseup", r), !1 }) } function r(t) { for (this.target = t, this.direction = window.getComputedStyle(this.target).direction, this.bar = '<div class="ss-scroll">', this.wrapper = e.createElement("div"), this.wrapper.setAttribute("class", "ss-wrapper"), this.el = e.createElement("div"), this.el.setAttribute("class", "ss-content"), "rtl" === this.direction && this.el.classList.add("rtl"), this.wrapper.appendChild(this.el); this.target.firstChild;)this.el.appendChild(this.target.firstChild); this.target.appendChild(this.wrapper), this.target.insertAdjacentHTML("beforeend", this.bar), this.bar = this.target.lastChild, i(this.bar, this), this.moveBar(), this.el.addEventListener("scroll", this.moveBar.bind(this)), this.el.addEventListener("mouseenter", this.moveBar.bind(this)), this.target.classList.add("ss-container"); var s = window.getComputedStyle(t); "0px" === s.height && "0px" !== s["max-height"] && (t.style.height = s["max-height"]) } function a() { for (var t = e.querySelectorAll("*[ss-container]"), i = 0; i < t.length; i++)s(t[i]) } var n = t.requestAnimationFrame || t.setImmediate || function (t) { return setTimeout(t, 0) }; r.prototype = { moveBar: function (t) { var e = this.el.scrollHeight, s = this.el.clientHeight, i = this; this.scrollRatio = s / e; var r = "rtl" === i.direction, a = r ? i.target.clientWidth - i.bar.clientWidth + 18 : -1 * (i.target.clientWidth - i.bar.clientWidth); n(function () { i.scrollRatio >= 1 ? i.bar.classList.add("ss-hidden") : (i.bar.classList.remove("ss-hidden"), i.bar.style.cssText = "height:" + Math.max(100 * i.scrollRatio, 10) + "%; top:" + i.el.scrollTop / e * 100 + "%;right:" + a + "px;") }) } }, e.addEventListener("DOMContentLoaded", a), r.initEl = s, r.initAll = a; var o = r; return o });
+</script>
+</head>
+<body>
+<header>
+<a class="logo" href="https://ethen.market"><img src="./img/logo.svg" /></a>
+</header>
+<main class="scroll"><a class="inner" href="#contact"><h2 id="contact">如何聯絡支援中心？</h2></a><div class="answer">如果您在使用本網站時遇到任何問題，請在Telegram 對話
+<a class="link" href="https://t.me/ethen_market">https://t.me/ethen_market</a>中描述您的問題.<br/>如欲詢問其他事項，請透過
+<a class="link" href="mailto:info@ethen.market">info@ethen.market</a>與我們聯絡.</div><a class="inner" href="#start"><h2 id="start">如何開始交易並將資金存入 Ethen？</h2></a><div class="answer">請參閱入門指南以熟悉 Ethen 的基本功能。<br/>從您的個人錢包存款到 Ethen 智慧型合約。如果您在造訪網站時已連結錢包，便會自動偵測到您的錢包。或者，您可以將您的私人金鑰直接貼上到錢包地址的欄位中。<img class="gif" src="./media-faq/en/eth_deposit.gif" alt="Deposit ETH"/></div><a class="inner" href="#withdraw"><h2 id="withdraw">如何取款？</h2></a><div class="answer"><img class="gif" src="./media-faq/en/eth_withdraw.gif" alt="Withdraw ETH"/></div><a class="inner" href="#place"><h2 id="place">如何找到價格最好的訂單？</h2></a><div class="answer">當您點選「買入/賣出」按鈕並且將您的訂單傳送到伺服器時，會自動找到最符合的選項（可能不一定與您在訂單本中選擇的訂單相同），並為您提供：<ol><li>與您的「買入」單價格相同或更低的現有訂單（從最低價開始）；</li><li>與您的「賣出」單價格相同或更高的現有訂單（從最高價開始) ;</li></ol></div><a class="inner" href="#buy_sell"><h2 id="buy_sell">如何在 Ethen 上買賣？</h2></a><div class="answer">請確認您的錢包已連結，並且選擇您想要交易的代幣。<br/>輸入訂單的金額、最高/最低價格以及到期日，或點選「訂單本」中的訂單以貼上數值。<br/>如果您設定的價格不存在足夠的資產，或者沒有一位買家能夠購買您想要出售的全部數量，您的訂單將以最優惠的價格部分執行。您一部分的訂單將會保留在訂單本中，直至其執行或到期。<img class="gif" src="./media-faq/en/sell.gif" alt="Sell example"/></div><a class="inner" href="#cancel_order"><h2 id="cancel_order">如何取消未結訂單？</h2></a><div class="answer"><img class="gif" src="./media-faq/en/cancel_order.gif" alt="Cancel order"/></div><a class="inner" href="#new_token"><h2 id="new_token">如何將一個代幣放在 Ethen 上販售？</h2></a><div class="answer"><img class="gif" src="./media-faq/en/new_token.gif" alt="New token"/></div><a class="inner" href="#gas_price"><h2 id="gas_price">如何設定燃料費？</h2></a><div class="answer">燃料費的建議價格是由 Ethen 設定。您可以在此處修改：<img class="gif" src="./media-faq/en/gas.gif" alt="Set gas price"/></div><a class="inner" href="#wallets"><h2 id="wallets">哪些錢包與 Ethen 平台相容？</h2></a><div class="answer">我們建議使用 MetaMask 附加元件或 Ledger Nano S 硬體錢包，以獲得安全便利的使用者體驗。<br/>閱讀如何安裝
+<a class="link" href="#metamask">MetaMask</a>
+擴充套件或連結您的
+<a class="link" href="#ledger">Ledger</a>
+裝置的資訊。<br/>或者，您可以透過私人金鑰使用任何以太坊錢包在 Ethen 上進行交易。雖然 Ethen 不會保存您的私人金鑰，但我們不推薦這種方法。將您的私人金鑰複製到剪貼簿，可能會在我們的網站遭到入侵、您意外造訪網路釣魚網站，或您的電腦上存在可竊取剪貼簿資料的惡意軟體時，導致您的資金被盜取。<img class="gif" src="./media-faq/en/use_pk.gif" alt="Use private key"/></div><a class="inner" href="#metamask"><h2 id="metamask">如何連結 MetaMask？</h2></a><div class="answer"><ul><li>安裝
+<a class="link" href="https://metamask.io/">MetaMask</a>
+並確保在瀏覽器中啟用擴充套件</li><li>點選瀏覽器中的擴充套件圖示，可導入 MetaMask 中現有的儲存內容或建立一個新的儲存內容</li><li>重新載入
+<a class="link" href="https://ethen.market">https://ethen.market</a>
+將會在頂部欄位中自動偵測到您的錢包。如果您之前使用的是不同的錢包，請從下拉選單中選擇 'MetaMask'.</li></ul></div><a class="inner" href="#ledger"><h2 id="ledger">如何連結到 Ledger Nano 錢包？</h2></a><div class="answer"><ul><li>在您的 Ledger 設備上安裝
+<a class="link" href="https://www.ledgerwallet.com/apps/ethereum">Ledger Wallet Ethereum app</a>
+應用程式</li><li>在 Ledger Wallet Ethereum 應用軟體的設定中，將「合約資料」以及「瀏覽器支援」設定為「是」</li><li>將 Ledger 裝置連接到您的電腦</li><li>在您的裝置上開啟 Ledger Wallet Ethereum 應用程式</li><li>在
+<a class="link" href="https://ethen.market">https://ethen.market</a>
+選擇 Ledger Nano S 錢包</li></ul></div><a class="inner" href="#contract_link"><h2 id="contract_link">我可以在哪裡找到 Ethen 合約原始碼？</h2></a><div class="answer"><a class="link" href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code">https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code</a></div><a class="inner" href="#unavailable"><h2 id="unavailable">如果網站無法使用，並且我不能取款，怎麼辦？</h2></a><div class="answer">取款原始碼已開源，並在
+<a class="link" href="https://ethenmarket.github.io/">https://ethenmarket.github.io/</a>
+上發佈。</div><a class="inner" href="#how_long_withdrawl"><h2 id="how_long_withdrawl">存款和取款需要多長時間？</h2></a><div class="answer">取決於交易當下的以太坊網路負載，通常需要 14 秒到 2 分鐘。</div><a class="inner" href="#withdrawal_limit"><h2 id="withdrawal_limit">是否存在取款限制？</h2></a><div class="answer">Ethen 不存在取款限制。</div><a class="inner" href="#how_long_trade"><h2 id="how_long_trade">交易需要花多長的時間？</h2></a><div class="answer">時間限制為 5 分鐘。在 5 分鐘後，交易會自動取消。</div><a class="inner" href="#edit_order"><h2 id="edit_order">訂單是否能夠編輯？</h2></a><div class="answer">在提交後，您無法修改訂單的細節。前往「交易 > 訂單」以刪除未結訂單並建立新訂單。</div><a class="inner" href="#is_safe"><h2 id="is_safe">Ethen 是否安全？</h2></a><div class="answer">為了最大限度地提高 Ethen 資金的安全性，我們採取了多項措施：<ul><li>交易所上並未建立任何使用者帳戶，這意味著您的私人金鑰無法存取您的錢包，也不會儲存您的個人資訊。</li><li>發送給 Ethen 智慧型合約的資金是透過兩個數位簽名進行驗證，確保交易資訊正確且無法更改。</li><li>取款原始碼開源並發佈至 Github，以防主站無法使用</li></ul></div><a class="inner" href="#fees_and_limits"><h2 id="fees_and_limits">費用以及交易限制為何？</h2></a><div class="answer">您只有在執行賣出/買入訂單時支付費用。<br/>掛單費 - 0%<br/>吃單費 - 0.25%</div><a class="inner" href="#order_size"><h2 id="order_size">是否存在最小或最大的訂單金額？</h2></a><div class="answer">最小訂單金額為 0.001 以太幣。Ethen 沒有最大訂單金額。</div><a class="inner" href="#gas"><h2 id="gas">我什麼時候支付燃料？</h2></a><div class="answer">燃料是在以太坊區塊鏈上進行的每項操作之執行費用。這項費用是支付給在您的區塊上挖礦的礦工。<br/>您在任何時候向以太坊區塊鏈發送交易時，都需要支付燃料費，包括執行交易以及從錢包中發送代幣或以太幣。<br/>您不需為建立買入/賣出訂單支付燃料，這些訂單無法立即比對並會發送到訂單本中。<br/>請注意，每次交易所需的燃料都會從您的個人錢包中收取。在向 Ethen 存款時，請確保為燃料留有足夠的資金。</div></main>
+<script>var scroll = document.querySelector('.scroll');
+SimpleScrollbar.initEl(scroll);
+if (location.hash) {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el) {
+        el.scrollIntoView();
+    }
+}</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ethen FAQ</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./styles/fonts/stylesheet.css">
+<style>html,
+        body {
+            width: 100%;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(97, 118, 139);
+            height: 60px;
+        }
+
+        .logo {
+
+            padding-left: 5%;
+        }
+
+        .logo img {
+            height: 24px;
+            display: inline-block;
+            margin-top: 3px;
+        }
+
+        body {
+
+            font-family: 'Gotham Pro';
+
+            background-color: #232D37;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        main {
+            padding: 0 5%;
+            box-sizing: border-box;
+            width: 90%;
+            height: calc(100vh - 85px);
+        }
+
+        a.link {
+            color: rgb(19, 180, 206);
+            text-decoration: none;
+        }
+
+        a.inner {
+            color: white;
+            text-decoration: none;
+        }
+
+        a.inner:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            /* font-weight: normal; */
+        }
+
+        .answer {
+            width: 60%;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .gif {
+            width: 100%;
+        }
+
+
+        .ss-wrapper {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            float: left;
+        }
+
+        .ss-content {
+            height: 100%;
+            width: calc(100% + 18px);
+            padding: 0 0 0 0;
+            position: relative;
+            overflow: auto;
+            box-sizing: border-box;
+        }
+
+        .ss-content.rtl {
+            width: calc(100% + 18px);
+            right: auto;
+        }
+
+        .ss-scroll {
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            width: 9px;
+            border-radius: 4px;
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s linear;
+        }
+
+        .ss-hidden {
+            display: none;
+        }
+
+        .ss-container:hover .ss-scroll,
+        .ss-container:active .ss-scroll {
+            opacity: 1;
+        }
+
+        .ss-grabbed {
+            -o-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }</style>
+<script>!function (t, e) { "object" == typeof exports ? module.exports = e(window, document) : t.SimpleScrollbar = e(window, document) }(this, function (t, e) { function s(t) { Object.prototype.hasOwnProperty.call(t, "data-simple-scrollbar") || Object.defineProperty(t, "data-simple-scrollbar", { value: new o(t) }) } function i(t, s) { function i(t) { var e = t.pageY - a; a = t.pageY, n(function () { s.el.scrollTop += e / s.scrollRatio }) } function r() { t.classList.remove("ss-grabbed"), e.body.classList.remove("ss-grabbed"), e.removeEventListener("mousemove", i), e.removeEventListener("mouseup", r) } var a; t.addEventListener("mousedown", function (s) { return a = s.pageY, t.classList.add("ss-grabbed"), e.body.classList.add("ss-grabbed"), e.addEventListener("mousemove", i), e.addEventListener("mouseup", r), !1 }) } function r(t) { for (this.target = t, this.direction = window.getComputedStyle(this.target).direction, this.bar = '<div class="ss-scroll">', this.wrapper = e.createElement("div"), this.wrapper.setAttribute("class", "ss-wrapper"), this.el = e.createElement("div"), this.el.setAttribute("class", "ss-content"), "rtl" === this.direction && this.el.classList.add("rtl"), this.wrapper.appendChild(this.el); this.target.firstChild;)this.el.appendChild(this.target.firstChild); this.target.appendChild(this.wrapper), this.target.insertAdjacentHTML("beforeend", this.bar), this.bar = this.target.lastChild, i(this.bar, this), this.moveBar(), this.el.addEventListener("scroll", this.moveBar.bind(this)), this.el.addEventListener("mouseenter", this.moveBar.bind(this)), this.target.classList.add("ss-container"); var s = window.getComputedStyle(t); "0px" === s.height && "0px" !== s["max-height"] && (t.style.height = s["max-height"]) } function a() { for (var t = e.querySelectorAll("*[ss-container]"), i = 0; i < t.length; i++)s(t[i]) } var n = t.requestAnimationFrame || t.setImmediate || function (t) { return setTimeout(t, 0) }; r.prototype = { moveBar: function (t) { var e = this.el.scrollHeight, s = this.el.clientHeight, i = this; this.scrollRatio = s / e; var r = "rtl" === i.direction, a = r ? i.target.clientWidth - i.bar.clientWidth + 18 : -1 * (i.target.clientWidth - i.bar.clientWidth); n(function () { i.scrollRatio >= 1 ? i.bar.classList.add("ss-hidden") : (i.bar.classList.remove("ss-hidden"), i.bar.style.cssText = "height:" + Math.max(100 * i.scrollRatio, 10) + "%; top:" + i.el.scrollTop / e * 100 + "%;right:" + a + "px;") }) } }, e.addEventListener("DOMContentLoaded", a), r.initEl = s, r.initAll = a; var o = r; return o });
+</script>
+</head>
+<body>
+<header>
+<a class="logo" href="https://ethen.market"><img src="./img/logo.svg" /></a>
+</header>
+<main class="scroll"><a class="inner" href="#contact"><h2 id="contact">How to contact support?</h2></a><div class="answer">If you have encountered any issues while using the site please describe your problem in the Telegram chat
+<a class="link" href="https://t.me/ethen_market">https://t.me/ethen_market</a>.<br/>For other enquiries, you can contact us at
+<a class="link" href="mailto:info@ethen.market">info@ethen.market</a>.</div><a class="inner" href="#start"><h2 id="start">How to start trading and deposit funds to Ethen?</h2></a><div class="answer">See the beginner’s guide to get familiar with Ethen’s basic features.<br/>Deposit funds to the Ethen smart contract from your personal wallet. Your wallet will be detected automatically
+if it’s connected at the time you access the site. Alternatively, you can paste your private key directly into
+the wallet address field.<img class="gif" src="./media-faq/en/eth_deposit.gif" alt="Deposit ETH"/></div><a class="inner" href="#withdraw"><h2 id="withdraw">How to make withdrawals?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/eth_withdraw.gif" alt="Withdraw ETH"/></div><a class="inner" href="#place"><h2 id="place">How to find orders at best price?</h2></a><div class="answer">When you click on a ‘Buy’/’Sell’ button and send your order to the server it will automatically find the best match (which might not necessarily be the same as the order you chose in the order book) and offer you:<ol><li>currently available orders with the lower or equal price to your ‘Buy’ order (starting with the lowest).</li><li>currently available orders with the higher or equal price to your ‘Sell’ order (starting with the highest).</li></ol></div><a class="inner" href="#buy_sell"><h2 id="buy_sell">How to buy and sell on Ethen?</h2></a><div class="answer">Make sure your wallet is connected and select the token you would like to trade.
+Enter the amount, maximum/minimum price, and expiry date for your order or click on an order in the Order Book to paste in the values.
+If insufficient assets are available at the price you set or there isn't a buyer for the whole amount you want to sell, your order will be partially executed at the best prices available.
+Part of your order will remain in the Order Book until it executes or expires.<img class="gif" src="./media-faq/en/sell.gif" alt="Sell example"/></div><a class="inner" href="#cancel_order"><h2 id="cancel_order">How to cancel an open order?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/cancel_order.gif" alt="Cancel order"/></div><a class="inner" href="#new_token"><h2 id="new_token">How to submit a token to Ethen for listing?</h2></a><div class="answer"><img class="gif" src="./media-faq/en/new_token.gif" alt="New token"/></div><a class="inner" href="#gas_price"><h2 id="gas_price">How to set gas price?</h2></a><div class="answer">The recommended gas price is set by Ethen. You can change it here:<img class="gif" src="./media-faq/en/gas.gif" alt="Set gas price"/></div><a class="inner" href="#wallets"><h2 id="wallets">Which wallets are compatible with the Ethen platform?</h2></a><div class="answer">We recommend using MetaMask add-on or Ledger Nano S hardware wallet for convenient and secure user experience.
+Read how to
+<a class="link" href="#metamask">install MetaMask extension</a>
+or
+<a class="link" href="#ledger">connect your Ledger device</a><br/>Alternatively, you can trade on Ethen with any Ethereum wallet by using your private key. Although Ethen doesn’t
+store your private keys, we do not recommend this method. Copying your private key to the clipboard might result
+in your funds getting stolen if our site is compromised, you accidentally visit a phishing website, or your computer
+has a malware that can steal clipboard data.<img class="gif" src="./media-faq/en/use_pk.gif" alt="Use private key"/></div><a class="inner" href="#metamask"><h2 id="metamask">How to connect MetaMask?</h2></a><div class="answer"><ul><li>Install
+<a class="link" href="https://metamask.io/">MetaMask</a>
+and make sure the extension is enabled in your browser</li><li>Click on the extension icon in your browser to import your existing storage within MetaMask or create a new
+one</li><li>Reload
+<a class="link" href="https://ethen.market">https://ethen.market</a>
+page. Your wallet will be automatically detected in the top bar. If you were
+using a different wallet before, select MetaMask from the drop-down menu.</li></ul></div><a class="inner" href="#ledger"><h2 id="ledger">How to connect a Ledger Nano wallet?</h2></a><div class="answer"><ul><li>Install a
+<a class="link" href="https://www.ledgerwallet.com/apps/ethereum">Ledger Wallet Ethereum app</a>
+on your Ledger device</li><li>In the Ledger Wallet Ethereum app’s settings set ‘Yes’ to ‘Contract data’ and ‘Browser support’</li><li>Connect the Ledger device to your computer</li><li>Open Ledger Wallet Ethereum app on your device</li><li>Choose Ledger Nano S wallet at
+<a class="link" href="https://ethen.market">https://ethen.market</a></li></ul></div><a class="inner" href="#contract_link"><h2 id="contract_link">Where can I find Ethen contract source code?</h2></a><div class="answer"><a class="link" href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code">https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code</a></div><a class="inner" href="#trading"><h1 id="trading">Trading</h1></a><a class="inner" href="#unavailable"><h2 id="unavailable">What if the site is unavailable and I can’t withdraw funds?</h2></a><div class="answer">The code for withdrawing funds is open source and published at
+<a class="link" href="https://ethenmarket.github.io/">https://ethenmarket.github.io/</a></div><a class="inner" href="#how_long_withdrawl"><h2 id="how_long_withdrawl">How long does deposit and withdrawal take?</h2></a><div class="answer">This depends on the Ethereum network load at the time of transaction, and usually takes from 14 seconds to 2 minutes.</div><a class="inner" href="#withdrawal_limit"><h2 id="withdrawal_limit">Is there a withdrawal limit?</h2></a><div class="answer">There is no withdrawal limit on Ethen.</div><a class="inner" href="#how_long_trade"><h2 id="how_long_trade">How long does a trade take?</h2></a><div class="answer">The time limit is 5 minutes. After 5 minutes, the trade will be automatically canceled.</div><a class="inner" href="#edit_order"><h2 id="edit_order">Is it possible to edit the order?</h2></a><div class="answer">You can’t change order details after submitting it. Go to Trades > Orders to cancel an open order and create a
+new one.</div><a class="inner" href="#is_safe"><h2 id="is_safe">Is Ethen safe?</h2></a><div class="answer">There are a number of steps taken to maximise the safety of your funds on Ethen:<ul><li>No user accounts are created on the exchange meaning there is no access to your walleted by your private
+key and no place to store your personal information.</li><li>Funds sent to the Ethen smart contract are verified by two digital signatures, ensuring that the transaction
+information is correct and impossible to change.</li><li>The code for withdrawing funds is open source and published on Github in case the main site is unavailable.</li></ul></div><a class="inner" href="#fees_and_limits"><h2 id="fees_and_limits">What are the fees and trade limits?</h2></a><div class="answer">You only pay a fee when executing sell/buy orders.<br/>Maker fee - 0%<br/>Taker fee - 0.25%</div><a class="inner" href="#order_size"><h2 id="order_size">Is there a minimum or a maximum order size?</h2></a><div class="answer">The minimum order size is 0.001 ETH. There is no maximum order size on Ethen.</div><a class="inner" href="#gas"><h2 id="gas">When do I pay gas?</h2></a><div class="answer">Gas is an execution fee for every operation made on the Ethereum blockchain. This fee goes to the miner who mines
+your block.<br/>You pay gas any time you send a transaction to the Ethereum blockchain, including executing a trade and sending
+tokens or ETH from/to your wallet.<br/>You don’t pay gas for creating a buy/sell order, which can't be matched immediately and is sent to the order
+book.<br/>Please note that the gas required for each transaction is always charged from your personal wallet. Make sure
+you have enough funds left for gas when you make a deposit to Ethen.</div></main>
+<script>var scroll = document.querySelector('.scroll');
+SimpleScrollbar.initEl(scroll);
+if (location.hash) {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el) {
+        el.scrollIntoView();
+    }
+}</script>
+</body>
+</html>
