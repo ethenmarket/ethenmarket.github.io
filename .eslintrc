@@ -12,16 +12,19 @@
       2,
       "always"
     ],
-    "no-console": "off",
+    "no-console": "warn",
     "default-case": "off",
     "no-param-reassign": "off",
     "react/forbid-prop-types": "off",
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "padded-blocks": "warn",
+    "no-multiple-empty-lines": "warn"
   },
   "env": {
     "es6": true,
     "node": true,
-    "browser": true
+    "browser": true,
+    "jest": true
   },
   "ecmaFeatures": {
     "jsx": true

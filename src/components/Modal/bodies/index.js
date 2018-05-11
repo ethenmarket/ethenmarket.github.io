@@ -1,13 +1,13 @@
-import Market from './Market';
 import AddNewToken from './AddNewToken';
 import SetPrivateKey from './SetPrivateKey';
 import SetGasPrice from './SetGasPrice';
 import Info from './Info';
+import TokenInfo from './TokenInfo';
 
 export {
-  Market,
   AddNewToken,
   SetPrivateKey,
   SetGasPrice,
-  Info
+  Info,
+  TokenInfo
 };

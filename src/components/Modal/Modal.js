@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactModal from "react-modal";
 import { connect } from "react-redux";
+import { getTranslate } from 'react-localize-redux';
+import { withTheme } from "styled-components";
 import { bindActionCreators } from "redux";
-import FocusLock from "react-focus-lock";
+// import FocusLock from "react-focus-lock";
 
 import { PRIVATE_KEY } from "../../API/web3";
 import {
@@ -14,35 +16,42 @@ import {
   setPrivateKey as setPrivateKeyAction,
   selectProvider as selectProviderAction
 } from "../../reducers/web3-provider";
-import { addNewToken as addNewTokenAction } from "../../reducers/actions";
+import {
+  addNewToken as addNewTokenAction,
+  auth as authAction,
+  sendEmail as sendEmailAction
+} from "../../reducers/actions";
 import { setGasPrice as setGasPriceAction } from "../../reducers/user";
+
 
 import {
   AddNewToken,
   SetPrivateKey,
   SetGasPrice,
-  Info
+  Info,
+  TokenInfo
 } from "./bodies";
 
 ReactModal.setAppElement(document.getElementById("root"));
 
-const getStylesByType = type =>
+const getStylesByType = (type, theme) =>
   type === MODAL_TYPES.MARKET
     ? {
       right: "0",
       left: "none",
-      top: "53px",
       borderRadius: 0,
-      height: "calc(100vh - 53px)",
-      width: "50vw",
+      top: '0',
+      height: "100vh",
+      width: "calc(50vw + 4px)",
       boxSizing: "border-box",
-      backgroundColor: "#1f2835",
+      backgroundColor: theme.bg1,
       border: "none",
       padding: "0"
     }
     : {
       height: "fit-content",
       width: "45%",
+      minWidth: "500px",
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
@@ -58,11 +67,12 @@ class Modal extends Component {
   };
 
   renderBody = () => {
-    const { closeModal, data } = this.props;
+    const { closeModal, data, translate } = this.props;
     switch (this.props.type) {
       case MODAL_TYPES.ADD_NEW_TOKEN: {
         return (
           <AddNewToken
+            translate={translate}
             addNewToken={this.props.addNewToken}
             closeModal={closeModal}
           />
@@ -71,9 +81,10 @@ class Modal extends Component {
       case MODAL_TYPES.SET_PRIVATE_KEY: {
         return (
           <SetPrivateKey
+            translate={translate}
             setPrivateKey={key => {
               this.props.setPrivateKey(key);
-              this.props.selectProvider(PRIVATE_KEY);
+              this.props.selectProvider({ provider: PRIVATE_KEY });
             }}
             closeModal={closeModal}
           />
@@ -82,6 +93,7 @@ class Modal extends Component {
       case MODAL_TYPES.SET_GAS_PRICE: {
         return (
           <SetGasPrice
+            translate={translate}
             setGasPrice={this.props.setGasPrice}
             closeModal={closeModal}
             gasPrice={data.gasPrice}
@@ -94,6 +106,64 @@ class Modal extends Component {
             closeModal={closeModal}
             okClick={closeModal}
             text={data.text}
+            translate={translate}
+          />
+        );
+      }
+      case MODAL_TYPES.USER_GUIDE: {
+        return (
+          <Info
+            header="GUIDE.GUIDE"
+            okText="GUIDE.START"
+            cancelText="GUIDE.SKIP"
+            closeModal={closeModal}
+            okClick={this.props.loadGuide}
+            text="GUIDE.MODAL_TEXT"
+            translate={translate}
+          />
+        );
+      }
+      case MODAL_TYPES.DISCLAIMER: {
+        return (
+          <Info
+            header="DISCLAIMER"
+            cancelText={null}
+            closeModal={closeModal}
+            text="DISCLAIMER_TEXT"
+            translate={translate}
+          />
+        );
+      }
+      case MODAL_TYPES.AUTH: {
+        return (
+          <Info
+            header="AUTHENTICATION"
+            okText="AUTHENTICATE"
+            closeModal={closeModal}
+            okClick={this.props.auth}
+            text="AUTH_MODAL_TEXT"
+            withoutFinalClose
+            translate={translate}
+          />
+        );
+      }
+      case MODAL_TYPES.TOKEN_INFO: {
+        return (
+          <TokenInfo
+            token={data.token}
+            closeModal={closeModal}
+            translate={translate}
+          />
+        );
+      }
+      case MODAL_TYPES.SIGNING: {
+        return (
+          <Info
+            header="SIGN_DATA"
+            text="SIGN_DATA_TEXT"
+            okText={null}
+            cancelText={null}
+            translate={translate}
           />
         );
       }
@@ -102,25 +172,26 @@ class Modal extends Component {
     }
   };
   render() {
-    const { type } = this.props;
+    const { type, theme } = this.props;
     if (!type) return null;
-    const contentStyles = getStylesByType(type);
+    const contentStyles = getStylesByType(type, theme);
     return (
-      <FocusLock>
-        <ReactModal
-          isOpen={type !== null}
-          onRequestClose={this.handleRequestCloseModal}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(22,31,44, 0.5)",
-              zIndex: "100"
-            },
-            content: contentStyles
-          }}
-        >
-          {this.renderBody()}
-        </ReactModal>
-      </FocusLock>
+      // <FocusLock>
+      <ReactModal
+        isOpen={type !== null}
+        shouldCloseOnOverlayClick={type === MODAL_TYPES.MARKET}
+        onRequestClose={this.handleRequestCloseModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(22,31,44, 0.5)",
+            zIndex: "100"
+          },
+          content: contentStyles
+        }}
+      >
+        {this.renderBody()}
+      </ReactModal>
+      // </FocusLock>
     );
   }
 }
@@ -134,12 +205,17 @@ Modal.propTypes = {
   addNewToken: PropTypes.func,
   setPrivateKey: PropTypes.func,
   selectProvider: PropTypes.func,
-  setGasPrice: PropTypes.func
+  setGasPrice: PropTypes.func,
+  loadGuide: PropTypes.func,
+  auth: PropTypes.func,
+  translate: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   type: state.modal.type,
-  data: state.modal.data
+  data: state.modal.data,
+  translate: getTranslate(state.locale)
 });
 
 const mapActionToProps = dispatch =>
@@ -149,9 +225,11 @@ const mapActionToProps = dispatch =>
       addNewToken: addNewTokenAction,
       setPrivateKey: setPrivateKeyAction,
       selectProvider: selectProviderAction,
-      setGasPrice: setGasPriceAction
+      setGasPrice: setGasPriceAction,
+      auth: authAction,
+      sendEmail: sendEmailAction
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapActionToProps)(Modal);
+export default connect(mapStateToProps, mapActionToProps)(withTheme(Modal));

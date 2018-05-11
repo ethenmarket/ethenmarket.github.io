@@ -1,5 +1,7 @@
 {
-    "mainnet": "https://infura.io/vwKftuetCYx3UrQwH5gH",
+    "mainnet": "https://mainnet.infura.io/vwKftuetCYx3UrQwH5gH",
+    "rinkeby": "https://rinkeby.infura.io/vwKftuetCYx3UrQwH5gH",
     "ropsten": "https://ropsten.infura.io/vwKftuetCYx3UrQwH5gH",
-    "local": "http://localhost:8545"
+    "local": "http://localhost:8545",
+    "testnode": "https://10.3.1.187:443"
 }

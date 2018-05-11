@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-
+import React, { Component, Fragment } from "react";
+import { Loading, MenuToggler } from '../share';
 import {
   AccountInfoWrapper,
   EtherAmount,
@@ -10,79 +10,76 @@ import {
   Badge
 } from "./styled";
 
+import { zeroAddress } from '../../reducers/user';
 import { cropAddress } from '../../utils';
 import { LEDGER, METAMASK, PRIVATE_KEY } from '../../API/web3';
 
-class AccountInfo extends Component {
-  state = {
-    isOpen: false
-  };
+const Loader = Loading(() => null);
 
-  toggleMenu = () => {
-    this.setState(state => {
-      if (!state.isOpen) {
-        const listener = (e) => {
-          if (e.target !== this.addr) {
-            this.setState({ isOpen: false });
-            document.removeEventListener('click', listener);
-          }
-        };
-        document.addEventListener('click', listener);
-      }
-      return ({ isOpen: !state.isOpen });
-    });
-  }
+class AccountInfo extends Component {
   render() {
     const {
       userAddress,
       userBalance,
-      providers,
       selectProvider,
       currentProvider,
       privateKey,
       openPrivateKeyModal,
-      openGasPriceModal
+      openGasPriceModal,
+      providerLoading,
+      translate
     } = this.props;
     return (
-      <AccountInfoWrapper>
-        <Info onClick={this.toggleMenu}>{cropAddress(userAddress)}</Info>
-        {this.state.isOpen && (
-          <AccountInfoMenu>
-            <FullAddress  innerRef={addr => {this.addr = addr;}}>{userAddress}</FullAddress>
-            {
-              providers.map(name => {
-                switch(name) {
-                  case METAMASK: {
-                    return <MenuItem onClick={() => selectProvider(METAMASK)}>Use Metamask wallet</MenuItem>;
-                  }
-                  case LEDGER: {
-                    return <MenuItem onClick={() => selectProvider(LEDGER)}>Use Ledger Nano S wallet</MenuItem>;
-                  }
-                  default: return null;
-                }
-              })
-            }
-            <MenuItem
-              onClick={() => {
-                if (privateKey) selectProvider(PRIVATE_KEY);
-                else openPrivateKeyModal();
-              }}
-            >Use private key (not recomended)
-            </MenuItem>
-            <MenuItem onClick={openPrivateKeyModal}>
-              Set private key (not recomended)
-            </MenuItem>
-            <MenuItem onClick={openGasPriceModal}>Gas price</MenuItem>
-          </AccountInfoMenu>
-        )}
+      <AccountInfoWrapper id="account-info">
+        <MenuToggler>
+          {
+            ({ isOpen, toggle, addDisable }) => (
+              <Fragment>
+                <Info onClick={toggle}>{cropAddress(userAddress)}</Info>
+                {isOpen && (
+                  <AccountInfoMenu>
+                    <FullAddress innerRef={addDisable}>{userAddress}</FullAddress>
+                    {currentProvider !== METAMASK && <MenuItem onClick={() => selectProvider({ provider: METAMASK })}>{translate("USE_METAMASK")}</MenuItem>}
+                    {currentProvider !== LEDGER && <MenuItem onClick={() => selectProvider({ provider: LEDGER })}>{translate("USE_LEDGER")}</MenuItem>}
+                    <MenuItem
+                      onClick={() => {
+                        if (privateKey && currentProvider !== PRIVATE_KEY) selectProvider({ provider: PRIVATE_KEY });
+                        else openPrivateKeyModal();
+                      }}
+                    >
+                      {
+                        currentProvider === PRIVATE_KEY
+                          ? translate("USE_OTHER_PK")
+                          : translate("USE_PK")
+                      }
+                    </MenuItem>
+                    <MenuItem onClick={openGasPriceModal}>{translate("GAS_PRICE")}</MenuItem>
+                  </AccountInfoMenu>
+                )}
+              </Fragment>
+            )
+          }
+        </MenuToggler>
+
         <EtherAmount>
-          {userBalance} ETH
+          {
+            userAddress === zeroAddress && !providerLoading ?
+              translate("CONNECT_WALLET") :
+              `${parseFloat(userBalance).toPrecision(10)} ETH`
+          }
 
           {
-            currentProvider && (
+            currentProvider && !providerLoading ? (
               <Badge color={currentProvider === PRIVATE_KEY ? 'rgb(255,52,52)' : '#1cbb78'}>
                 {currentProvider.replace(/_/g, ' ')}
               </Badge>
+            ) : (
+              <Loader
+                fillContainer
+                width="25px"
+                height="25px"
+                isLoading={providerLoading}
+              />
             )
           }
         </EtherAmount>

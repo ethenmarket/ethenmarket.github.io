@@ -1,0 +1,195 @@
+a.inner(href="#contact")
+    h2#contact How to contact support?
+.answer
+    | If you have encountered any issues while using the site please describe your problem in the Telegram chat
+    |
+    a.link(href="https://t.me/ethen_market") https://t.me/ethen_market
+    | .
+    br
+    | For other enquiries, you can contact us at
+    |
+    a.link(href="mailto:info@ethen.market") info@ethen.market
+    | .
+
+a.inner(href="#start")
+    h2#start How to start trading and deposit funds to Ethen?
+.answer
+    | See the beginner’s guide to get familiar with Ethen’s basic features.
+    br
+    | Deposit funds to the Ethen smart contract from your personal wallet. Your wallet will be detected automatically
+    | if it’s connected at the time you access the site. Alternatively, you can paste your private key directly into
+    | the wallet address field.
+    img.gif(src="./media-faq/en/eth_deposit.gif", alt="Deposit ETH")
+
+a.inner(href="#withdraw")
+    h2#withdraw How to make withdrawals?
+.answer
+    img.gif(src="./media-faq/en/eth_withdraw.gif", alt="Withdraw ETH")
+
+a.inner(href="#place")
+    h2#place How to find orders at best price?
+.answer
+    | When you click on a ‘Buy’/’Sell’ button and send your order to the server it will automatically find the best match (which might not necessarily be the same as the order you chose in the order book) and offer you:
+    ol
+        li
+            | currently available orders with the lower or equal price to your ‘Buy’ order (starting with the lowest).
+        li
+            | currently available orders with the higher or equal price to your ‘Sell’ order (starting with the highest).
+
+
+a.inner(href="#buy_sell")
+    h2#buy_sell How to buy and sell on Ethen?
+.answer
+    | Make sure your wallet is connected and select the token you would like to trade.
+    | Enter the amount, maximum/minimum price, and expiry date for your order or click on an order in the Order Book to paste in the values.
+    | If insufficient assets are available at the price you set or there isn't a buyer for the whole amount you want to sell, your order will be partially executed at the best prices available.
+    | Part of your order will remain in the Order Book until it executes or expires.
+    img.gif(src="./media-faq/en/sell.gif", alt="Sell example")
+
+a.inner(href="#cancel_order")
+    h2#cancel_order How to cancel an open order?
+.answer
+    img.gif(src="./media-faq/en/cancel_order.gif", alt="Cancel order")
+
+a.inner(href="#new_token")
+    h2#new_token How to submit a token to Ethen for listing?
+.answer
+    img.gif(src="./media-faq/en/new_token.gif", alt="New token")
+
+
+a.inner(href="#gas_price")
+    h2#gas_price How to set gas price?
+.answer
+    | The recommended gas price is set by Ethen. You can change it here:
+    img.gif(src="./media-faq/en/gas.gif", alt="Set gas price")
+
+a.inner(href="#wallets")
+    h2#wallets Which wallets are compatible with the Ethen platform?
+.answer
+    | We recommend using MetaMask add-on or Ledger Nano S hardware wallet for convenient and secure user experience.
+    | Read how to
+    |
+    a.link(href="#metamask") install MetaMask extension
+    |
+    | or
+    |
+    a.link(href="#ledger") connect your Ledger device
+    br
+    | Alternatively, you can trade on Ethen with any Ethereum wallet by using your private key. Although Ethen doesn’t
+    | store your private keys, we do not recommend this method. Copying your private key to the clipboard might result
+    | in your funds getting stolen if our site is compromised, you accidentally visit a phishing website, or your computer
+    | has a malware that can steal clipboard data.
+    img.gif(src="./media-faq/en/use_pk.gif", alt="Use private key")
+a.inner(href="#metamask")
+    h2#metamask How to connect MetaMask?
+.answer
+    ul
+        li
+            | Install
+            |
+            a.link(href="https://metamask.io/") MetaMask
+            |
+            | and make sure the extension is enabled in your browser
+        li
+            | Click on the extension icon in your browser to import your existing storage within MetaMask or create a new
+            | one
+        li
+            | Reload
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+            |
+            | page. Your wallet will be automatically detected in the top bar. If you were
+            | using a different wallet before, select MetaMask from the drop-down menu.
+
+a.inner(href="#ledger")
+    h2#ledger How to connect a Ledger Nano wallet?
+.answer
+    ul
+        li
+            | Install a
+            |
+            a.link(href="https://www.ledgerwallet.com/apps/ethereum") Ledger Wallet Ethereum app
+            |
+            | on your Ledger device
+        li In the Ledger Wallet Ethereum app’s settings set ‘Yes’ to ‘Contract data’ and ‘Browser support’
+        li Connect the Ledger device to your computer
+        li Open Ledger Wallet Ethereum app on your device
+        li
+            | Choose Ledger Nano S wallet at
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+
+a.inner(href="#contract_link")
+    h2#contract_link Where can I find Ethen contract source code?
+.answer
+    a.link(href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code") https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code
+
+a.inner(href="#trading")
+    h1#trading Trading
+
+a.inner(href="#unavailable")
+    h2#unavailable What if the site is unavailable and I can’t withdraw funds?
+.answer
+    | The code for withdrawing funds is open source and published at
+    |
+    a.link(href="https://ethenmarket.github.io/") https://ethenmarket.github.io/
+
+a.inner(href="#how_long_withdrawl")
+    h2#how_long_withdrawl How long does deposit and withdrawal take?
+.answer This depends on the Ethereum network load at the time of transaction, and usually takes from 14 seconds to 2 minutes.
+
+a.inner(href="#withdrawal_limit")
+    h2#withdrawal_limit Is there a withdrawal limit?
+.answer There is no withdrawal limit on Ethen.
+
+a.inner(href="#how_long_trade")
+    h2#how_long_trade How long does a trade take?
+.answer The time limit is 5 minutes. After 5 minutes, the trade will be automatically canceled.
+
+a.inner(href="#edit_order")
+    h2#edit_order Is it possible to edit the order?
+.answer
+    | You can’t change order details after submitting it. Go to Trades > Orders to cancel an open order and create a
+    | new one.
+
+a.inner(href="#is_safe")
+    h2#is_safe Is Ethen safe?
+.answer
+    | There are a number of steps taken to maximise the safety of your funds on Ethen:
+    ul
+        li
+            | No user accounts are created on the exchange meaning there is no access to your walleted by your private
+            | key and no place to store your personal information.
+        li
+            | Funds sent to the Ethen smart contract are verified by two digital signatures, ensuring that the transaction
+            | information is correct and impossible to change.
+        li
+            | The code for withdrawing funds is open source and published on Github in case the main site is unavailable.
+
+a.inner(href="#fees_and_limits")
+    h2#fees_and_limits What are the fees and trade limits?
+.answer
+    | You only pay a fee when executing sell/buy orders.
+    br
+    | Maker fee - 0%
+    br
+    | Taker fee - 0.25%
+
+a.inner(href="#order_size")
+    h2#order_size Is there a minimum or a maximum order size?
+.answer The minimum order size is 0.001 ETH. There is no maximum order size on Ethen.
+
+a.inner(href="#gas")
+    h2#gas When do I pay gas?
+.answer
+    | Gas is an execution fee for every operation made on the Ethereum blockchain. This fee goes to the miner who mines
+    | your block.
+    br
+    | You pay gas any time you send a transaction to the Ethereum blockchain, including executing a trade and sending
+    |tokens or ETH from/to your wallet.
+    br
+    | You don’t pay gas for creating a buy/sell order, which can't be matched immediately and is sent to the order
+    |book.
+    br
+    | Please note that the gas required for each transaction is always charged from your personal wallet. Make sure
+    |you have enough funds left for gas when you make a deposit to Ethen.

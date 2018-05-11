@@ -5,16 +5,20 @@ import Border from "./Border";
 import Toggle from "./Toggle";
 import Button from "./Button";
 import Input from "./Input";
-import Loading from "./Loading";
+import Loading, { Loader } from "./Loading";
 import Star from "./Star";
 import Note from "./Note";
 import ErrorMessage from './ErrorMessage';
+import withHover from './withHover';
+import HoverableWarning from './HoverableWarning';
+import List from './List';
+import MenuToggler from './MenuToggler';
 
 const Arrow = color => `
   content: "";
   border-color: ${color} transparent transparent;
   border-style: solid;
-  border-width: 5px 5px 2.5px;
+  border-width: 5px 5px 0.5px;
   display: inline-block;
   height: 0;
   width: 0;
@@ -33,5 +37,10 @@ export {
   Loading,
   Star,
   Note,
-  ErrorMessage
+  ErrorMessage,
+  withHover,
+  Loader,
+  HoverableWarning,
+  List,
+  MenuToggler
 };

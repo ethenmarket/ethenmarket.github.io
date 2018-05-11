@@ -4,23 +4,23 @@ import { Header, CloseButton, ModalContent, ModalFooter } from '../styled';
 import { Button } from '../../share';
 
 class Info extends Component {
-
   handleOkClick = () => {
-    this.props.okClick();
+    if (this.props.okClick) this.props.okClick();
+    if (this.props.withoutFinalClose) return;
     this.props.closeModal();
   }
 
   render() {
-    const { closeModal, okText, cancelText, header } = this.props;
+    const { closeModal, okText, cancelText, header, translate } = this.props;
     return (
       <Fragment >
-        <Header>{header}<CloseButton onClick={closeModal} /></Header>
+        <Header>{translate(header)}{closeModal && <CloseButton onClick={closeModal} />}</Header>
         <ModalContent>
-          <p>{this.props.text}</p>
+          <p>{translate(this.props.text)}</p>
         </ModalContent>
         <ModalFooter>
-          <Button textColor="rgb(150,167,184)" color='#eaeaea' onClick={closeModal}>{cancelText}</Button>
-          <Button onClick={this.handleOkClick} width={60}>{okText}</Button>
+          {cancelText && <Button textColor="rgb(150,167,184)" color='#eaeaea' onClick={closeModal}>{translate(cancelText)}</Button>}
+          {okText && <Button width={50} onClick={this.handleOkClick}>{translate(okText)}</Button>}
         </ModalFooter>
       </Fragment>
     );
@@ -33,12 +33,15 @@ Info.propTypes = {
   okText: PropTypes.string,
   cancelText: PropTypes.string,
   header: PropTypes.string.isRequired,
-  okClick: PropTypes.func.isRequired
+  okClick: PropTypes.func.isRequired,
+  withoutFinalClose: PropTypes.bool,
+  translate: PropTypes.func.isRequired
 };
 
 Info.defaultProps = {
   okText: 'OK',
-  cancelText: 'Cancel'
+  cancelText: 'CANCEL',
+  withoutFinalClose: false
 };
 
 export default Info;

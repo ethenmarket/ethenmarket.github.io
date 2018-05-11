@@ -2,20 +2,10 @@ import produce from 'immer';
 import { getLinkToTransaction } from "../utils";
 import { createAction } from './util';
 
-export const NETWORK_ERROR = 'error/NETWORK';
-export const networkError = createAction(NETWORK_ERROR);
-export const RUNTIME_ERROR = 'error/RUNTIME';
-export const runtimeError = createAction(RUNTIME_ERROR);
-export const CUSTOM_ERROR = 'error/CUSTOM_ERROR';
+export const ERROR = 'error/RUNTIME';
+export const showError = createAction(ERROR);
 export const CLEAR_ERROR = 'error/CLEAR';
 export const clearError = createAction(CLEAR_ERROR);
-
-export const ERRORS_ACTIONS = {
-  clearError,
-  runtimeError,
-  networkError
-};
-
 
 export const CLEAR_INFO = 'info/CLEAR';
 export const clearInfo = createAction(CLEAR_INFO);
@@ -45,19 +35,16 @@ export default (state = initState, action) => produce(state, draft => {
   if (prefix === 'error') draft.error.nonce += 1;
   if (prefix === 'info') draft.info.nonce += 1;
   switch (action.type) {
-    case NETWORK_ERROR: {
-      const code = action.payload;
-      draft.error.title = 'Network error';
-      draft.error.message = `Error ${code}`;
-      break;
-    }
-    case RUNTIME_ERROR: {
+    case ERROR: {
+      if (typeof action.payload === 'object') {
+        const { nonce } = draft.error;
+        draft.error = action.payload;
+        draft.error.nonce = nonce;
+        break;
+      }
       draft.error.title = 'Error';
       draft.error.message = action.payload;
-      break;
-    }
-    case CUSTOM_ERROR: {
-      draft.error.message = action.payload;
+      draft.error.children = null;
       break;
     }
     case CLEAR_ERROR: {
@@ -78,6 +65,10 @@ export default (state = initState, action) => produce(state, draft => {
 });
 
 export const newTransaction = tx => showInfo({
-  title: 'New transaction',
-  children: `<a target="_blank" href="${getLinkToTransaction(tx)}">${tx}</a>`
+  autoDismiss: 0,
+  translate: {
+    title: true
+  },
+  title: 'NEW_TX',
+  children: `<a style="word-break: break-all" target="_blank" href="${getLinkToTransaction(tx)}">${tx}</a>`
 });

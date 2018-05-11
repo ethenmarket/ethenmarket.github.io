@@ -1,0 +1,179 @@
+a.inner(href="#contact")
+    h2#contact ¿Cómo ponerse en contacto con el servicio de soporte?
+.answer
+    | Si tiene algún problema mientras usa el sitio, envíe una descripción del problema al chat de Telegram
+    |
+    a.link(href="https://t.me/ethen_market") https://t.me/ethen_market
+    | .
+    br
+    | Para otro tipo de consultas, puede ponerse en contacto con nosotros escribiéndonos a
+    |
+    a.link(href="mailto:info@ethen.market") info@ethen.market
+    | .
+
+a.inner(href="#start")
+    h2#start ¿Cómo empezar a operar y depositar fondos en Ethen?
+.answer
+    | Consulte la guía para principiantes para familiarizarse con las funciones básicas de Ethen.
+    br
+    | Deposite fondos en el contrato inteligente de Ethen desde su cartera personal. La cartera se detectará automáticamente si está conectada cuando accede al sitio.
+    br
+    | También puede pegar su clave privada directamente en el campo de dirección de la cartera.
+    img.gif(src="./media-faq/en/eth_deposit.gif", alt="Deposit ETH")
+
+a.inner(href="#withdraw")
+    h2#withdraw ¿Cómo hacer una retirada?
+.answer
+    img.gif(src="./media-faq/en/eth_withdraw.gif", alt="Withdraw ETH")
+
+a.inner(href="#place")
+    h2#place ¿Cómo encontrar órdenes al mejor precio?
+.answer
+    | Al pulsar el botón Comprar/Vender y enviar la orden al servidor, este buscará automáticamente la mejor coincidencia (que podría no ser necesariamente la misma orden que eligió en la cartera de órdenes) y le ofrecerá lo siguiente:
+    ol
+        li
+            | Órdenes actualmente disponibles con un precio menor o igual que el de su orden de compra (empezando por la más baja).
+        li
+            | Órdenes actualmente disponibles con un precio mayor o igual que el de su orden de venta (empezando por la más alta).
+
+
+a.inner(href="#buy_sell")
+    h2#buy_sell ¿Cómo comprar y vender en Ethen?
+.answer
+    | Asegúrese de que su cartera está conectada y seleccione el token con el que desea operar.
+    | Especifique la cantidad, el precio máximo/mínimo y la fecha de caducidad de su orden, o haga clic en una orden de la cartera de órdenes para pegar los valores.
+    | Si no hay activos suficientes al precio indicado o si no hay ningún comprador para la cantidad total que desea vender, la orden se ejecutará parcialmente a los mejores precios disponibles. Parte de la orden permanecerá en la cartera de órdenes hasta que se ejecute o caduque.
+    img.gif(src="./media-faq/en/sell.gif", alt="Sell example")
+
+a.inner(href="#cancel_order")
+    h2#cancel_order ¿Cómo cancelar una orden abierta?
+.answer
+    img.gif(src="./media-faq/en/cancel_order.gif", alt="Cancel order")
+
+a.inner(href="#new_token") ¿Cómo enviar un token a Ethen para que quede listada?
+.answer
+    img.gif(src="./media-faq/en/new_token.gif", alt="New token")
+
+
+a.inner(href="#gas_price")
+    h2#gas_price ¿Cómo definir el precio del gas?
+.answer
+    | El precio recomendado del gas lo establece Ethen. Puede cambiarlo aquí:
+    img.gif(src="./media-faq/en/gas.gif", alt="Set gas price")
+
+a.inner(href="#wallets")
+    h2#wallets ¿Qué carteras son compatibles con la plataforma de Ethen?
+.answer
+    | Recomendamos usar el complemento MetaMask o la cartera de hardware Ledger Nano S para disfrutar de una experiencia cómoda y segura. Lea las instrucciones para
+    |
+    a.link(href="#metamask") instalar la extensión MetaMask
+    |
+    | o
+    |
+    a.link(href="#ledger") conectar su dispositivo Ledger.
+    br
+    | También puede operar en Ethen con cualquier cartera de Ethereum usando su clave privada. Aunque Ethen no almacena sus claves privadas, no se recomienda usar este método. Al copiar la clave privada en un portapapeles, sus fondos podrían ser robados en caso de un ataque al sitio, si visita un sitio web de phishing por accidente o si su equipo tiene malware capaz de robar los datos del portapapeles.
+    img.gif(src="./media-faq/en/use_pk.gif", alt="Use private key")
+a.inner(href="#metamask")
+    h2#metamask ¿Cómo conectar MetaMask?
+.answer
+    ul
+        li
+            | Instale
+            |
+            a.link(href="https://metamask.io/") MetaMask
+            |
+            | y asegúrese de que la extensión está habilitada en el navegador.
+        li
+            | Haga clic en el icono de la extensión en el navegador para importar el almacenamiento existente en MetaMask o cree uno nuevo.
+        li
+            | Vuelva a cargar la página
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+            |
+            |.
+            | La cartera se detectará automáticamente en la barra superior. Si previamente utilizaba una cartera diferente, seleccione MetaMask en el menú desplegable.
+
+a.inner(href="#ledger")
+    h2#ledger ¿Cómo conectar una cartera Ledger Nano?
+.answer
+    ul
+        li
+            | Instale
+            |
+            a.link(href="https://www.ledgerwallet.com/apps/ethereum") la aplicación Ledger Wallet Ethereum
+            |
+            | en su dispositivo Ledger
+        li En los ajustes de la aplicación Ledger Wallet Ethereum seleccione Yes (Sí) en Contract data (Datos del contrato) y Browser support (Compatibilidad con navegadores).
+        li Conecte el dispositivo Ledger a su ordenador.
+        li Abra la aplicación Ledger Wallet Ethereum en su dispositivo.
+        li
+            | Seleccione la cartera Ledger Nano S en
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+
+a.inner(href="#contract_link")
+    h2#contract_link ¿Dónde se encuentra el código fuente del contrato de Ethen?
+.answer
+    a.link(href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code") https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code
+
+a.inner(href="#unavailable")
+    h2#unavailable ¿Qué puedo hacer si el sitio no está disponible y no puedo retirar fondos?
+.answer
+    | El código para retirar fondos es de fuente abierta y está disponible en
+    |
+    a.link(href="https://ethenmarket.github.io/") https://ethenmarket.github.io/
+
+a.inner(href="#how_long_withdrawl")
+    h2#how_long_withdrawl ¿Cuánto tardan en procesarse los depósitos y retiradas?
+.answer Depende de la carga de la red de Ethereum en el momento de la transacción. Normalmente suele tardar entre 14 segundos y 2 minutos.
+
+a.inner(href="#withdrawal_limit")
+    h2#withdrawal_limit ¿Hay algún límite de retirada?
+.answer No hay límites de retirada en Ethen.
+
+a.inner(href="#how_long_trade")
+    h2#how_long_trade ¿Cuánto tarda en realizarse una operación?
+.answer El tiempo máximo es de 5 minutos. Transcurridos 5 minutos, la operación se cancelará automáticamente.
+
+
+a.inner(href="#edit_order")
+    h2#edit_order ¿Es posible modificar una orden?
+.answer
+    | No se pueden cambiar los detalles de una orden una vez emitida. Vaya a Operaciones > Órdenes para cancelar una orden abierta y crear una nueva.
+
+a.inner(href="#is_safe")
+    h2#is_safe ¿Es Ethen seguro?
+.answer
+    | Tomamos una serie de medidas para optimizar la seguridad de sus fondos en Ethen:
+    ul
+        li
+            | No se crean cuentas de usuario en el intercambio, lo que significa que no es posible acceder a una cartera mediante la clave privada y no hay espacio donde guardar información personal.
+        li
+            | Los fondos que se envían al contrato inteligente de Ethen se verifican mediante dos firmas digitales para garantizar que la información de la transacción es correcta e imposible de modificar.
+        li
+            | El código para retirar fondos es de fuente abierta y está disponible en Github por si el sitio principal no estuviera disponible.
+
+a.inner(href="#fees_and_limits")
+    h2#fees_and_limits ¿Cuáles son las tarifas y los límites de operaciones?
+.answer
+    | Solo se cobran tarifas cuando se ejecutan órdenes de venta/compra.
+    br
+    | Tarifa del emisor: 0 %.
+    br
+    | Tarifa del receptor: 0,25 %.
+
+a.inner(href="#order_size")
+    h2#order_size ¿Existe un importe mínimo o máximo por orden?
+.answer El importe mínimo de una orden es de 0,001 ETH. No hay importe máximo en Ethen.
+
+a.inner(href="#gas")
+    h2#gas ¿Cuándo se paga gas?
+.answer
+    | El gas es una tarifa de ejecución por cada operación realizada en la cadena de bloques de Ethereum. Esta tarifa se dirige a la persona que mina el bloque.
+    br
+    | Se paga gas cada vez que se envía una transacción a la cadena de bloques de Ethereum, así como cuando se ejecuta una operación y se envían tokens o ETH de su cartera o a esta.
+    br
+    | No se paga gas por crear una orden de compra o venta, que no se puede combinar inmediatamente y se envía a la cartera de órdenes.
+    br
+    | Tenga en cuenta que el gas necesario para cada transacción se carga siempre a su cartera personal. Asegúrese de que tiene fondos suficientes para satisfacer el gas al realizar un depósito para Ethen.

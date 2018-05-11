@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import colorUtil from "color";
@@ -8,16 +8,23 @@ import warningIcon from './warning.svg';
 const isProcent = width => width[width.length - 1] === '%';
 
 const InputStyled = styled.input`
-  height: 36px;
+  height: ${props => props.height || '36px'};
   text-align: ${props => props.align};
   width: ${props => isProcent(props.width) ? '100%' : props.width};
+
+  @media (max-width: 1440px) {
+    ${props => props.responsive ? '' : 'max-width: 180px;'}
+    height: 30px;
+  }
+
   border-radius: 2px;
   color: black;
-  border: ${props => props.border || 'none'};
+  border: ${props => props.border || props.theme.inputBorderColor ? `solid 1px ${props.theme.inputBorderColor}` : 'none'};
   font-family: 'Effra';
-  padding: 0 10px 0 ${props => `${props.desc.length * 10.2 || 10}px`};
+  padding: 0 10px 0 ${props => props.labelWidth};
   box-sizing: border-box;
   color: #161f2c;
+  font-size: 0.9rem;
   background-color: ${props => props.bgColor || 'white'};
   &:focus ${props => (props.activeStyle ? ", &:active" : "")} {
     outline: none;
@@ -57,39 +64,81 @@ const InputWrap = styled.label`
   }
 `;
 
-const Input = ({
-  desc,
-  placeholder,
-  onChange,
-  value,
-  color,
-  validate,
-  width,
-  style,
-  invalide,
-  ...props
-}) => (
-  <InputWrap
-    invalide={invalide}
-    desc={desc}
-    style={style}
-    width={width}
-  >
-    <InputStyled
-      desc={desc}
-      color={color}
-      width={width}
-      type="text"
-      placeholder={placeholder}
-      onChange={e => {
-        const inputValue = e && e.target && e.target.value;
-        if (validate(inputValue)) onChange(inputValue);
-      }}
-      value={value}
-      {...props}
-    />
-  </InputWrap>
-);
+class Input extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      labelWidth: `${props.desc.length * 10.5 || 10}px`
+    };
+  }
+
+  componentDidMount() {
+    this.initLabelSize();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.desc !== this.props.desc) {
+      this.initLabelSize();
+    }
+  }
+
+  initLabelSize = () => {
+    const width = window.getComputedStyle(this.label, '::before').getPropertyValue('width');
+    const labelWidth = parseFloat(width.slice(0, -2)) + 15;
+    this.setState({ labelWidth: `${labelWidth}px` });
+  }
+  render() {
+    const {
+      desc,
+      placeholder,
+      onChange,
+      value,
+      color,
+      validate,
+      width,
+      style,
+      invalide,
+      responsive,
+      ...props
+    } = this.props;
+
+    const { labelWidth } = this.state;
+
+    return (
+      <InputWrap
+        innerRef={(e) => {this.label = e;}}
+        invalide={invalide}
+        desc={desc}
+        style={style}
+        width={width}
+      >
+        <InputStyled
+          labelWidth={labelWidth}
+          responsive={responsive}
+          desc={desc}
+          color={color}
+          width={width}
+          type="text"
+          placeholder={placeholder}
+          onChange={e => {
+            const inputValue = e && e.target && e.target.value;
+            if (validate(inputValue)) {
+              if (props.onChangeFullEvent) {
+                e.persist();
+                onChange(e);
+              } else {
+                onChange(inputValue);
+              }
+            };
+          }}
+          value={value}
+          {...props}
+        />
+      </InputWrap>
+    );
+  }
+}
+
 
 Input.propTypes = {
   desc: PropTypes.string,
@@ -101,7 +150,9 @@ Input.propTypes = {
   width: PropTypes.string,
   style: PropTypes.object,
   align: PropTypes.string,
-  invalide: PropTypes.bool
+  invalide: PropTypes.bool,
+  responsive: PropTypes.bool,
+  onChangeFullEvent: PropTypes.bool
 };
 
 Input.defaultProps = {
@@ -113,7 +164,9 @@ Input.defaultProps = {
   width: '200px',
   style: {},
   align: 'right',
-  invalide: false
+  invalide: false,
+  responsive: false,
+  onChangeFullEvent: false
 };
 
 export default Input;

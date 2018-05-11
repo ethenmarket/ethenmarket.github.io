@@ -1,0 +1,3 @@
+.scrollbar-table > div:first-child {
+    overflow-x: hidden !important;
+}

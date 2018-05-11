@@ -3,47 +3,49 @@ import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
 import ProviderEngine from "web3-provider-engine";
 import FetchSubprovider from "web3-provider-engine/subproviders/fetch";
-import { BigNumber } from 'bignumber.js';
-import TX from 'ethereumjs-tx';
-import { Buffer } from 'buffer';
-import { promisify } from 'es6-promisify';
-import { privateToAddress, addHexPrefix, toBuffer, hashPersonalMessage, ecsign, toRpcSig } from 'ethereumjs-util';
+import { BigNumber } from "bignumber.js";
+import axios from "axios";
+import TX from "ethereumjs-tx";
+import { Buffer } from "buffer";
+import { promisify } from "es6-promisify";
+import util, {
+  privateToAddress,
+  addHexPrefix,
+  toBuffer,
+  hashPersonalMessage,
+  ecsign,
+  toRpcSig,
+  sha3
+} from "ethereumjs-util";
 
-import networks from './networks.json';
-import ethenABI from './ABI/ethen.json';
-import erc20ABI from './ABI/ERC20.json';
+import networks from "./networks.json";
+
+window.util = util;
 
 let ledgerWeb3 = null;
 let metaMaskWeb3 = null;
 let privateWeb3 = null;
-
-export const LEDGER = 'ledger';
-export const METAMASK = 'metamask';
-export const PRIVATE_KEY = 'private_key';
+export const LEDGER = "ledger";
+export const METAMASK = "metamask";
+export const PRIVATE_KEY = "private_key";
 // configuration can be overrided by env variables
-const rpcUrl = networks[process.env.REACT_APP_NETWORK_URL] || "https://infura.io/vwKftuetCYx3UrQwH5gH"; // TODO CHANGE TO MAINNET
+const rpcUrl =
+  networks[process.env.REACT_APP_NETWORK_URL] ||
+  "https://infura.io/vwKftuetCYx3UrQwH5gH";
 const networkId = parseInt(process.env.REACT_APP_NETWORK_ID || "1", 10);
 
 export const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-// export const getReadOnlyWeb3 = async () => {
-//   const engine = new ProviderEngine();
-//   engine.addProvider(new FetchSubprovider({ rpcUrl }));
-//   engine.start();
-//   return new Web3(engine);
-// };
-
-
 // we define all wallets exposing a way to get a web3 instance.
 export default {
   // create a web3 with the ledger device
-  [LEDGER]: async () => {
-    if (ledgerWeb3) return ledgerWeb3;
+  [LEDGER]: async (newInstance) => {
+    if (ledgerWeb3 && !newInstance) return ledgerWeb3;
     const engine = new ProviderEngine();
     const getTransport = () => TransportU2F.create();
     const ledger = await createLedgerSubprovider(getTransport, {
       networkId,
-      accountsLength: 5
+      accountsLength: 1
     });
     engine.addProvider(ledger);
     engine.addProvider(new FetchSubprovider({ rpcUrl }));
@@ -52,17 +54,16 @@ export default {
     return ledgerWeb3;
   },
   // detect extension like Mist/MetaMask
-  [METAMASK]: () => {
-    if (metaMaskWeb3) return metaMaskWeb3;
+  [METAMASK]: async (newInstance) => {
+    if (metaMaskWeb3 && !newInstance) return metaMaskWeb3;
     const { web3 } = window;
     if (!web3) return null;
     metaMaskWeb3 = new Web3(web3.currentProvider);
     return metaMaskWeb3;
   },
-  [PRIVATE_KEY]: () => {
-    if (privateWeb3) return privateWeb3;
+  [PRIVATE_KEY]: async (newInstance) => {
+    if (privateWeb3 && !newInstance) return privateWeb3;
     privateWeb3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
-    window.pr = privateWeb3;
     return privateWeb3;
   }
 };
@@ -79,88 +80,138 @@ export const getTypedDataForOrder = ({
 }) => [
   [
     {
-      "name": "Contract",
-      "type": "address",
-      "value": contractAddress.toString()
+      name: "Contract",
+      type: "address",
+      value: contractAddress.toString()
     },
     {
-      "name": "Order",
-      "type": "string",
-      "value": orderType.toString()
+      name: "Order",
+      type: "string",
+      value: orderType.toString()
     },
     {
-      "name": "Token",
-      "type": "address",
-      "value": tokenAddress.toString()
+      name: "Token",
+      type: "address",
+      value: tokenAddress.toString()
     },
     {
-      "name": "Nonce",
-      "type": "uint",
-      "value": nonce.toString(10)
+      name: "Nonce",
+      type: "uint",
+      value: nonce.toString(10)
     },
     {
-      "name": "Price",
-      "type": "uint",
-      "value": price.toString(10)
+      name: "Price",
+      type: "uint",
+      value: price.toString(10)
     },
     {
-      "name": "Amount",
-      "type": "uint",
-      "value": amount.toString(10)
+      name: "Amount",
+      type: "uint",
+      value: amount.toString(10)
     },
     {
-      "name": "Expire",
-      "type": "uint",
-      "value": expire.toString(10)
+      name: "Expire",
+      type: "uint",
+      value: expire.toString(10)
     }
   ],
   userAddress
 ];
 
-export const withDecimals = (number, decimals) => BigNumber(number).times(
-  BigNumber(10).pow(decimals)
-).toString();
+export const withDecimals = (number, decimals) =>
+  BigNumber(number)
+    .times(BigNumber(10).pow(decimals))
+    .toString();
 
-
-let ethenContract;
+let ethenABI;
 export const getContract = async (web3, address) => {
-  if (ethenContract) return ethenContract;
+  if (!ethenABI) {
+    const { data } = await axios.get(`/ABI/ethen.json`);
+    ethenABI = data;
+  }
   const EthenContract = web3.eth.contract(ethenABI);
-  ethenContract = EthenContract.at(address);
+  const ethenContract = EthenContract.at(address);
+
   return ethenContract;
 };
 
 let ERC20Contract;
 export const getERC20Contract = async (web3, address) => {
   if (ERC20Contract) return ERC20Contract.at(address);
-  ERC20Contract = web3.eth.contract(erc20ABI);
+  const { data } = await axios.get(`/ABI/ERC20.json`);
+  ERC20Contract = web3.eth.contract(data);
   return ERC20Contract.at(address);
 };
 
-export const getVfromSign = sign => parseInt(sign.slice(130), 16);
+export const getVfromSign = sign => {
+  const v = parseInt(sign.slice(130), 16);
+  return v < 27 ? v + 27 : v;
+};
 export const getRfromSign = sign => `0x${sign.slice(2, 66)}`; // shifted 2 cause '0x' at the begin
 export const getSfromSign = sign => `0x${sign.slice(66, 130)}`;
 
+let ledgerAddress;
 
-export const getUserAddress = (web3, provider) => provider === PRIVATE_KEY ? web3.eth.defaultAccount : web3.eth.accounts[0];
-export const getAddressFromPK = (pk) => {
-  let address = privateToAddress(Buffer.from(pk, 'hex'));
-  address = addHexPrefix(address.toString('hex'));
+const prepareAddress = (address) => address ? address.toLowerCase() : '';
+
+export const getUserAddress = async (web3, provider) => {
+  if (provider === PRIVATE_KEY) return prepareAddress(web3.eth.defaultAccount);
+  if (provider === METAMASK) return prepareAddress(web3.eth.accounts[0]);
+  if (provider === LEDGER) {
+    if (ledgerAddress) return ledgerAddress;
+
+    const accounts = await promisify(web3.eth.getAccounts.bind(web3.eth))();
+    if (accounts) [ledgerAddress] = accounts;
+    ledgerAddress = prepareAddress(ledgerAddress);
+    return ledgerAddress;
+  }
+
+  return null;
+};
+export const getAddressFromPK = pk => {
+  let address = privateToAddress(Buffer.from(pk, "hex"));
+  address = addHexPrefix(address.toString("hex"));
   return address;
+};
+
+const toHex = value => addHexPrefix(BigNumber(value).toString(16));
+
+const initNonceParams = {
+  customNonce: 0,
+  lastTxCount: null
+};
+const noncesParams = {};
+const getNonceParams = (address) => {
+  if (!noncesParams[address]) {
+    noncesParams[address] = {...initNonceParams};
+  }
+  return noncesParams[address];
 };
 
 export const getSignedRawTransaction = async (web3, raw, privateKey) => {
   const address = getAddressFromPK(privateKey);
-  const nonce = await promisify(web3.eth.getTransactionCount.bind(web3.eth))(address);
+  const nonceParams = getNonceParams(address);
+  const nonce = await promisify(web3.eth.getTransactionCount.bind(web3.eth))(
+    address
+  );
+  if (nonceParams.lastTxCount === null) {
+    nonceParams.lastTxCount = nonce;
+  } else if (nonceParams.lastTxCount !== nonce) {
+    nonceParams.customNonce -= (nonce - nonceParams.lastTxCount);
+    nonceParams.lastTxCount = nonce;
+  }
   const txRaw = {
-    nonce,
+    nonce: nonce + nonceParams.customNonce,
     from: address,
     ...raw,
-    value: addHexPrefix(BigNumber(raw.value || 0).toString(16))
+    gasPrice: toHex(raw.gasPrice || 12000000000),
+    gasLimit: toHex(raw.gasLimit || 210000),
+    value: toHex(raw.value || 0)
   };
+  nonceParams.customNonce += 1;
   const tx = new TX(txRaw);
-  tx.sign(Buffer.from(privateKey, 'hex'));
-  return addHexPrefix(tx.serialize().toString('hex'));
+  tx.sign(Buffer.from(privateKey, "hex"));
+  return addHexPrefix(tx.serialize().toString("hex"));
 };
 
 export const sendRawTransaction = async (web3, raw, privateKey) => {
@@ -168,14 +219,17 @@ export const sendRawTransaction = async (web3, raw, privateKey) => {
   return promisify(web3.eth.sendRawTransaction.bind(web3.eth))(signedRaw);
 };
 
-
 const leftPad = (str, len, pad) => {
-  if (str.length >= len) { return str; }
+  if (str.length >= len) {
+    return str;
+  }
   return pad.repeat(len - str.length) + str;
 };
 
-const del0x = (hex) => {
-  if (hex.substr(0, 2) === "0x") { return hex.substr(2); }
+const del0x = hex => {
+  if (hex.substr(0, 2) === "0x") {
+    return hex.substr(2);
+  }
   return hex;
 };
 
@@ -185,23 +239,30 @@ const num2hex = (num, bytes) => {
   return leftPad(del0x(hex), bytes * 2, "0");
 };
 
-export const getTradeMessage = (ethenAddr, order) => Buffer.concat([
-  toBuffer(ethenAddr),
-  toBuffer(`0x${num2hex(order.type, 1)}`), // number
-  toBuffer(order.token),
-  toBuffer(`0x${num2hex(order.nonce, 32)}`),
-  toBuffer(`0x${num2hex(order.price, 32)}`),
-  toBuffer(`0x${num2hex(order.amount, 32)}`),
-  toBuffer(`0x${num2hex(order.expire, 32)}`)
-]).toString('hex');
+export const getTradeMessage = (ethenAddr, order) =>
+  sha3(Buffer.concat([
+    toBuffer(ethenAddr),
+    toBuffer(`0x${num2hex(order.type, 1)}`), // number
+    toBuffer(order.token),
+    toBuffer(`0x${num2hex(order.nonce, 32)}`),
+    toBuffer(`0x${num2hex(order.price, 32)}`),
+    toBuffer(`0x${num2hex(order.amount, 32)}`),
+    toBuffer(`0x${num2hex(order.expire, 32)}`)
+  ]));
 
-export const signMessage = async (web3, { provider, data, from, privateKey = '' }) => {
+export const signMessage = async (
+  web3,
+  { provider, data, from, privateKey = "" }
+) => {
   let signature;
   let newHash = false;
-  const { typed, message } = data;
+  let { message } = data;
+  const { typed } = data;
   if (provider === METAMASK) {
     newHash = true;
-    const { result, error } = await promisify(web3.currentProvider.sendAsync.bind(web3.currentProvider))({
+    const { result, error } = await promisify(
+      web3.currentProvider.sendAsync.bind(web3.currentProvider)
+    )({
       method: "eth_signTypedData",
       from,
       jsonrpc: "2.0",
@@ -210,21 +271,28 @@ export const signMessage = async (web3, { provider, data, from, privateKey = '' 
     if (error) throw new Error(error.message);
     signature = result;
   } else {
-    const messageHash = hashPersonalMessage(toBuffer(message));
-    console.log('Signing message: ', message);
+    if (typeof message === 'string') message = toBuffer(message);
+    const messageHash = hashPersonalMessage(message);
+    console.log("Signing message: ", message);
+    console.log("Message hash", messageHash);
 
     if (provider === PRIVATE_KEY) {
-      const { s, r, v } = ecsign(messageHash, toBuffer(addHexPrefix(privateKey)));
+      const { s, r, v } = ecsign(
+        messageHash,
+        toBuffer(addHexPrefix(privateKey))
+      );
       signature = toRpcSig(v, r, s);
     }
+
     if (provider === LEDGER) {
-      signature = promisify(web3.eth.signPersonalMessage.bind(web3.eth))({
-        from: "m/44'/60'/0'", // default path for ledger https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
-        data: messageHash.toString('hex')
-      });
+      signature = await promisify(web3.personal.sign.bind(web3.personal))(
+        addHexPrefix(message.toString("hex")),
+        from
+      );
     }
+    console.log("Message hash", messageHash.toString("hex"));
   }
-  console.log('Signature: ', signature);
+  console.log("Signature: ", signature);
 
   return {
     signature,

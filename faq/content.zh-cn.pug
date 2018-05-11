@@ -1,0 +1,182 @@
+a.inner(href="#contact")
+    h2#contact 如何联系客户支持？
+.answer
+    | 如果您在使用本网站期间遇到任何问题，请在Telegram聊天窗口描述您的问题：
+    |
+    a.link(href="https://t.me/ethen_market") https://t.me/ethen_market
+    | .
+    br
+    | 如需咨询其他问题，您可以发邮件至
+    |
+    a.link(href="mailto:info@ethen.market") info@ethen.market
+    | 来联系我们.
+
+a.inner(href="#start")
+    h2#start 如何开始在Ethen进行交易和存款？
+.answer
+    | 请参阅新手指南以熟悉Ethen的基本功能。
+    br
+    | 用您的个人钱包存款到Ethen智能合约。如果在您访问网站时连接了您的钱包，它将自动被检测出来。或者，您可以将您的私钥直接粘贴到钱包地址字段中。
+    img.gif(src="./media-faq/en/eth_deposit.gif", alt="Deposit ETH")
+
+a.inner(href="#withdraw")
+    h2#withdraw 如何提款？
+.answer
+    img.gif(src="./media-faq/en/eth_withdraw.gif", alt="Withdraw ETH")
+
+a.inner(href="#place")
+    h2#place 如何寻找最优价格的订单？
+.answer
+    | 当您点击“买入”/“卖出”按钮并将您的订单发送到服务器时，它会自动找到最佳匹配（可能不一定与您在订单簿中选择的订单相同），并为您提供：
+    ol
+        li
+            | 与您的“买入”订单价格相同或较低（从最低开始）的目前可选的订单；
+        li
+            | 与您的“卖出”订单价格相同或更高（从最高开始）的目前可选的订单；
+
+
+a.inner(href="#buy_sell")
+    h2#buy_sell 如何在Ethen上进行买入和卖出操作？
+.answer
+    | 确保您的钱包已连接并选择您想要交易的代币。
+    br
+    | 输入订单的金额、最高/最低价格和到期日期，或点击订单簿中的订单并粘贴数值。
+    br
+    | 如果您设置的价格没有足够的可用资产，或者您想要出售的总金额没有买家，那么您的订单将以适用的最优惠的价格来部分执行。部分订单将保留在订单簿中，直至其得到执行或到期。
+    img.gif(src="./media-faq/en/sell.gif", alt="Sell example")
+
+a.inner(href="#cancel_order")
+    h2#cancel_order 如何取消一笔开仓订单？
+.answer
+    img.gif(src="./media-faq/en/cancel_order.gif", alt="Cancel order")
+
+a.inner(href="#new_token")
+    h2#new_token 如何将代币提交至Ethen以便挂牌出售？
+.answer
+    img.gif(src="./media-faq/en/new_token.gif", alt="New token")
+
+
+a.inner(href="#gas_price")
+    h2#gas_price 如何设置gas价格？
+.answer
+    | 推荐的gas价格由Ethen进行设置。您可以在此处进行更改：
+    img.gif(src="./media-faq/en/gas.gif", alt="Set gas price")
+
+a.inner(href="#wallets")
+    h2#wallets Ethen平台接受哪些钱包？
+.answer
+    | 我们建议使用MetaMask附加软件或Ledger Nano S硬件钱包以获得方便和安全的用户体验。阅读
+    |
+    a.link(href="#metamask") 如何安装MetaMask扩展程序
+    |
+    | 或
+    |
+    a.link(href="#ledger") 连接您的Ledger设备。
+    br
+    | 或者，您可以使用私钥并用任何以太坊（Ethereum）钱包在Ethen上进行交易。虽然Ethen并不存储您的私钥，但我们不推荐这种方法。如果我们的网站遭到入侵，或者您意外访问钓鱼网站或您的计算机上存在可窃取剪贴板数据的恶意软件，那么将您的私钥复制到剪贴板可能会导致您的资金被盗取。
+    img.gif(src="./media-faq/en/use_pk.gif", alt="Use private key")
+a.inner(href="#metamask")
+    h2#metamask 如何连接MetaMask？
+.answer
+    ul
+        li
+            | 安装
+            |
+            a.link(href="https://metamask.io/") MetaMask
+            |
+            | 并确保您的浏览器已启用该拓展程序
+        li
+            | 单击浏览器中的扩展图标便可导入MetaMask中的现有存储或创建一个新的存储
+        li
+            | 刷新
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+            |
+            | 页面您的钱包将在顶部栏中被自动检测到。如果您之前使用的是不同的钱包，请从下拉菜单中选择MetaMask。
+
+a.inner(href="#ledger")
+    h2#ledger 如何连接Ledger Nano钱包？
+.answer
+    ul
+        li
+            | 在您的Ledger设备上安装
+            |
+            a.link(href="https://www.ledgerwallet.com/apps/ethereum") Ledger Wallet Ethereum 应用
+            |
+            | 程序
+        li 在Ledger Wallet Ethereum应用程序的设置中，将'合同数据’（Contract data）和'浏览器支持’（Browser support）设置为'是'（Yes）
+        li 将Ledger设备连接到您的计算机
+        li 在您的设备上打开Ledger Wallet Ethereum应用程序
+        li
+            | 在
+            |
+            a.link(href="https://ethen.market") https://ethen.market
+            |
+            | 中选择Ledger Nano S钱包
+
+a.inner(href="#contract_link")
+    h2#contract_link 我在哪里可以找到Ethen合约源代码？
+.answer
+    a.link(href="https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code") https://etherscan.io/address/0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d#code
+
+a.inner(href="#unavailable")
+    h2#unavailable 如果该网站不可用并且我无法提取资金，该怎么办呢？
+.answer
+    | 提取资金的代码是开源的，并发布在
+    |
+    a.link(href="https://ethenmarket.github.io/") https://ethenmarket.github.io/
+    |
+    | 上。
+
+a.inner(href="#how_long_withdrawl")
+    h2#how_long_withdrawl 存款和提款需要多长时间？
+.answer 这取决于交易时的以太坊网络负载，通常需要14秒到2分钟。
+
+a.inner(href="#withdrawal_limit")
+    h2#withdrawal_limit 有提款限额吗？
+.answer 在Ethen上没有取款限制。
+
+a.inner(href="#how_long_trade")
+    h2#how_long_trade 一笔交易需要多长时间？
+.answer 时间限制为5分钟。5分钟后，交易将被自动取消。
+
+a.inner(href="#edit_order")
+    h2#edit_order 可以编辑订单吗？
+.answer
+    | 提交后无法更改订单详细信息。您可到“交易>订单”部分来取消开仓订单并创建一个新订单。
+
+a.inner(href="#is_safe")
+    h2#is_safe Ethen安全吗？
+.answer
+    | 为了最大限度地提高您在Ethen上的资金的安全性，我们采取了多项措施：
+    ul
+        li
+            | 未在交易所创建用户帐户，这意味着通过您的私人密钥无法访问您的钱包，也无法存储您的个人信息。
+        li
+            | 发送给Ethen智能合约的资金通过两个数字签名来进行验证，确保交易信息正确且无法更改。
+        li
+            | 提取资金的代码是开源的，并在Github上发布，以防止主站点无法使用。
+
+a.inner(href="#fees_and_limits")
+    h2#fees_and_limits 费用和交易限额是多少？
+.answer
+    | 您只需在执行卖出/买入订单时支付一笔费用。
+    br
+    | Maker（挂单）费 - 0%
+    br
+    | Taker（吃单）费 - 0.25%
+
+a.inner(href="#order_size")
+    h2#order_size 有最小订单规模和最大订单规模限制吗？
+.answer 最小订单规模是0.001 ETH。在Ethen上没有最大订单规模限制。
+
+a.inner(href="#gas")
+    h2#gas 我何时支付gas费用？
+.answer
+    | Gas是在以太坊区块链上进行的每项操作的执行费用。这笔费用会交给挖掘您的区块的矿工。
+    br
+    | 您在任何时候向以太坊区块链发送交易时都需要支付gas费用，包括执行一笔交易以及从钱包中发送代币或ETH或将代币或ETH发送至钱包。
+    br
+    | 您在创建无法立即匹配并发送至您的订单簿的买入/卖出订单时，无需支付gas费用。
+    br
+    | 请注意，每笔交易所需的gas费用会总是从您的个人钱包中收取。在向Ethen存款时，请确保有足够的剩余资金用于gas费用支付。

@@ -1,6 +1,21 @@
+import produce from 'immer';
+import { createAction } from './util';
+
+export const UPDATE_CONTRACTS = 'contract/UPDATE_CONTRACTS';
+export const updateContracts = createAction(UPDATE_CONTRACTS);
+
+
 const initState = {
-  current: '0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d',
-  list: ['0xf4c27b8b002389864ac214cb13bfeef4cc5c4e8d']
+  current: '',
+  list: []
 };
 
-export default (state = initState) => state;
+export default (state = initState, action) => produce(state, (draft) => {
+  switch(action.type) {
+    case UPDATE_CONTRACTS: {
+      draft.list = action.payload.list;
+      draft.current = action.payload.current;
+      break;
+    }
+  }
+});

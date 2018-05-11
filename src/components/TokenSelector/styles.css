@@ -14,13 +14,17 @@
     border: none;
 }
 
+body.light .Select-control{
+    background-color: #ffffff !important;
+}
+
 .Select.is-open .Select-control {
     background-color: white !important;
     border: 1px solid #bec1c5;
 }
 
 .Select-input input {
-    padding: 4px 0 8px 10px;
+    padding: 4px 0 8px 0px;
     height: 24px;
 };
 
@@ -30,6 +34,11 @@
 
 .Select-input {
     height: 30px;
+    padding-left: 28px;
+}
+
+.Select-input input {
+    max-width: 148px;
 }
 
 .Select-input {
@@ -58,3 +67,20 @@
 .Select-arrow-zone {
     padding-top: 5px;
 }
+
+
+
+/* .VirtualizedScroll {
+    position: absolute;
+    overflow-x: hidden;
+}
+
+.ScrollContent {
+    background: transparent;
+    z-index: 2;
+    float: right;
+}
+
+.ScrollBarContainer {
+    width: auto;
+} */

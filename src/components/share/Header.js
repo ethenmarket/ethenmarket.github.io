@@ -1,13 +1,13 @@
 import styled from 'styled-components';
+import { withPadding } from '../../styles';
 
 export default styled.h1`
-  height: 42px;
-  background-color: #161f2c;
+  height: ${props => props.height || '42px'};
+  background-color: ${props => props.theme.bg1};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
   text-transform: uppercase;
-  font-weight: bold;
   font-size: 0.9rem;
+  ${withPadding()}
 `;

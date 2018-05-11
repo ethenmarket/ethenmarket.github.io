@@ -10,17 +10,17 @@ class SetGasPrice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gasPrice: BigNumber(props.gasPrice).div(G),
+      gasPrice: BigNumber(props.gasPrice || 4 * G).div(G).toString(),
       isGasPriceInvalide: false
     };
   }
-  onAddressChange = (gasPrice) => {
+  onGasPriceChange = (gasPrice) => {
     this.setState({ gasPrice, isGasPriceInvalide: false });
   }
 
   handleOkClick = () => {
     const { gasPrice } = this.state;
-    if (BigNumber(gasPrice || 0).times(G).gte(1)) {
+    if (BigNumber(gasPrice.trim() || 0).times(G).gte(1)) {
       this.props.setGasPrice(BigNumber(gasPrice).times(G).toString()); // to gwei
       this.props.closeModal();
     } else {
@@ -29,16 +29,17 @@ class SetGasPrice extends Component {
   }
 
   render() {
-    const { closeModal } = this.props;
+    const { closeModal, translate } = this.props;
     const { gasPrice, isGasPriceInvalide } = this.state;
     return (
       <Fragment >
-        <Header>Set gas price<CloseButton onClick={closeModal} /></Header>
+        <Header>{translate("SET_GAS_PRICE")}<CloseButton onClick={closeModal} /></Header>
         <ModalContent>
           <InputLabel>
-            Gas price
+            {translate("GAS_PRICE")}
             <Input
-              onChange={this.onAddressChange}
+              responsive
+              onChange={this.onGasPriceChange}
               value={gasPrice}
               invalide={isGasPriceInvalide}
               align="left"
@@ -51,8 +52,8 @@ class SetGasPrice extends Component {
           </InputLabel>
         </ModalContent>
         <ModalFooter>
-          <Button textColor="rgb(150,167,184)" color='#eaeaea' onClick={closeModal}>Cancel</Button>
-          <Button onClick={this.handleOkClick} width={60}>Ok</Button>
+          <Button textColor="rgb(150,167,184)" color='#eaeaea' onClick={closeModal}>{translate("CANCEL")}</Button>
+          <Button onClick={this.handleOkClick} width={60}>{translate("OK")}</Button>
         </ModalFooter>
       </Fragment>
     );
@@ -62,7 +63,8 @@ class SetGasPrice extends Component {
 SetGasPrice.propTypes = {
   closeModal: PropTypes.func.isRequired,
   setGasPrice: PropTypes.func.isRequired,
-  gasPrice: PropTypes.string.isRequired
+  gasPrice: PropTypes.string.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 export default SetGasPrice;

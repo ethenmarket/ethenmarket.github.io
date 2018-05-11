@@ -17,7 +17,7 @@ const StarWrapper = styled.button`
   }
 `;
 
-const Star = ({ height, width, color, onClick }) =>(
+const Star = ({ height, width, color, onClick }) => (
   <StarWrapper height={height} width={width} onClick={onClick} >
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -3,28 +3,33 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import isFloat from "validator/lib/isFloat";
 import BigNumber from "bignumber.js";
-import { Button, Input, Loading } from "../../share";
-
-import { isValidAddress } from "../../../utils";
+import { Button, Input, Loader, HoverableWarning } from "../../share";
+import { isValidAddress, getPrecision, floorNumber } from "../../../utils";
+import { withPadding } from '../../../styles';
 
 const Wrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: ${props => props.transfer ? "auto 1fr auto auto" : "repeat(4, auto)"};
   justify-content: left;
   margin: 15px 0;
-  padding: 0 20px;
+  ${withPadding()}
 `;
 
 const CustomButton = Button.extend`
-  margin-left: 20px;
-  padding: 0 10px;
+  margin-left: 10px;
 `;
 
-const Loader = Loading(() => null);
 
 export const MOVE_FUNDS_TYPES = {
-  WITHDRAW: "Withdraw",
-  DEPOSIT: "Deposit",
-  TRANSFER: "Transfer"
+  WITHDRAW: "WITHDRAW",
+  DEPOSIT: "DEPOSIT",
+  TRANSFER: "TRANSFER"
+};
+
+const getAmountWithRightPrecision = (amount, decimals) => {
+  const prec = getPrecision(amount);
+  if (prec >= decimals) amount = floorNumber(amount, decimals);
+  return amount;
 };
 
 class MoveFunds extends Component {
@@ -35,10 +40,29 @@ class MoveFunds extends Component {
     addressInvalid: false
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.decimals !== this.props.decimals && this.state.amount) {
+      this.setState(state => ({
+        amount: getAmountWithRightPrecision(state.amount, nextProps.decimals)
+      }));
+    }
+  }
+
+  checkAmountTroubling = amount =>
+    (
+      this.props.ether &&
+      this.props.type === MOVE_FUNDS_TYPES.DEPOSIT &&
+      !BigNumber(this.props.maxAmount).minus(amount || 0).gt('0.1')
+    );
+
+
   handleAmountChange = amount => {
+    const { decimals } = this.props;
+    amount = getAmountWithRightPrecision(amount, decimals);
     this.setState({
       amount,
-      amountInvalid: false
+      amountInvalid: false,
+      amountTroubling: this.checkAmountTroubling(amount)
     });
   };
 
@@ -54,8 +78,7 @@ class MoveFunds extends Component {
     const amountInvalid =
       !isFloat(amount) ||
       BigNumber(amount).isZero() ||
-      BigNumber(amount).isNegative() ||
-      BigNumber(amount).gt(this.props.maxAmount);
+      BigNumber(amount).isNegative();
     const addressInvalid =
       this.props.type === MOVE_FUNDS_TYPES.TRANSFER && !isValidAddress(address);
     if (amountInvalid || addressInvalid) {
@@ -72,14 +95,15 @@ class MoveFunds extends Component {
   };
 
   handleMaxButtonClick = () => {
-    this.setState({ amount: this.props.maxAmount, amountInvalid: false });
+    this.setState({ amount: this.props.maxAmount });
   }
 
   render() {
-    const { type, symbol, isLoading, isError } = this.props;
+    const { type, symbol, isLoading, isError, ether, translate } = this.props;
     const { amount, address, amountInvalid, addressInvalid } = this.state;
+    const isTransfer = type === MOVE_FUNDS_TYPES.TRANSFER;
     return (
-      <Wrapper>
+      <Wrapper transfer={isTransfer}>
         <Input
           validate={val => isFloat(val.toString()) || val === ""}
           value={amount}
@@ -88,31 +112,40 @@ class MoveFunds extends Component {
           placeholder="0.00"
           onChange={this.handleAmountChange}
         />
-        {type === MOVE_FUNDS_TYPES.TRANSFER ? (
+        {isTransfer && (
           <Input
+            responsive
             value={address}
-            desc="Address"
+            desc={translate("ADDRESS")}
             placeholder="0x0000000000000000000000000000000000000000"
             invalide={addressInvalid}
             onChange={this.handleAddressChange}
-            width="405px"
+            width="calc(100% - 0px)"
             style={{
-              marginLeft: "20px"
+              marginLeft: "10px"
             }}
           />
-        ) : null}
-        <CustomButton onClick={this.handleButtonClick} width={94}>
-          {type}
+        )}
+        <CustomButton onClick={this.handleButtonClick}>
+          {translate(type)}
         </CustomButton>
-        <CustomButton onClick={this.handleMaxButtonClick}>
-          max
-        </CustomButton>
+        {
+          ether && type !== MOVE_FUNDS_TYPES.WITHDRAW
+            ? this.state.amountTroubling && (
+              <HoverableWarning
+                text={translate("NOT_ENOUGH_FUNDS_WARNING")}
+              />
+            )
+            : <CustomButton onClick={this.handleMaxButtonClick}>{translate("MAX")}</CustomButton>
+        }
         <Loader
           fillContainer
           width="36px"
           height="36px"
+          padding="10"
           isLoading={isLoading}
-          errorMessage="Sorry, there was a problem during deposit"
+          translate={translate}
+          errorMessage="DEPOSIT_WARNING"
           error={isError}
         />
       </Wrapper>
@@ -124,9 +157,12 @@ MoveFunds.propTypes = {
   symbol: PropTypes.string.isRequired,
   action: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+  decimals: PropTypes.number.isRequired,
   isLoading: PropTypes.bool,
   isError: PropTypes.bool,
-  maxAmount: PropTypes.string.isRequired
+  maxAmount: PropTypes.string.isRequired,
+  ether: PropTypes.bool.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 MoveFunds.defaultProps = {

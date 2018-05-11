@@ -1,15 +1,22 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from 'prop-types';
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import Scrollbar from "react-custom-scrollbars";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getTranslate } from "react-localize-redux";
 
-import { openModal as openModalAction, MODAL_TYPES } from '../../reducers/modal';
-import { getTokens, getCurrentToken } from '../../reducers/tokens';
 import {
-  currentTokenChanged as currentTokenChangedAction
-} from '../../reducers/actions';
+  openModal as openModalAction,
+  MODAL_TYPES
+} from "../../reducers/modal";
+import {
+  getTokens,
+  getCurrentToken,
+  setCurrentToken as setCurrentTokenAction
+} from "../../reducers/tokens";
+
+
 import "./styles.css";
 
 import {
@@ -18,46 +25,82 @@ import {
   Value,
   ValueWrapper,
   TokenTicker,
+  TokenName,
   TokenTickerWrapper,
   NotVerified
 } from "./styled";
 
-function renderValueComponent(props) {
-  const { children } = props;
+import { List } from "../share";
+
+const renderValueComponent = isActive => ({ children }) => (
+  <div id="token-selector" className="Select-value">
+    <Value active={isActive}>{children}</Value>
+
+  </div>
+);
+
+const filterToken = (token, filter) => {
+  if (!filter) return true;
+  filter = filter.toLowerCase();
   return (
-    <div className="Select-value">
-      <Value>{children}</Value>
-    </div>
+    (token.name || '').toLowerCase().includes(filter) ||
+    (token.symbol || '').toLowerCase().includes(filter) ||
+    token.address.toLowerCase().includes(filter)
   );
-}
+};
 
 /* eslint-disable react/no-multi-comp */
+const tokenPropType = PropTypes.shape({
+  favorite: PropTypes.bool,
+  verified: PropTypes.bool,
+  label: PropTypes.string,
+  value: PropTypes.string,
+  name: PropTypes.string
+});
+const getRenderOptionComponent = (actions, { translate }) => {
+  class RenderOptionComponent extends Component {
+    render() {
+      const { favorite, verified, label, value, name } = this.props.option;
 
-class RenderOptionComponent extends Component {
-  render() {
-    const { verified, label, value } = this.props.option;
-    return (
-      <ValueWrapper>
-        <TokenTickerWrapper
-          onClick={() => {
-            this.props.selectValue(value);
-          }}
+      return (
+        <ValueWrapper
+          focused={this.props.focused}
+          style={this.props.style}
         >
-          <TokenTicker title={label}>
-            {this.props.children}
-          </TokenTicker>
-          {!verified && <NotVerified>not verified</NotVerified>}
-        </TokenTickerWrapper>
-      </ValueWrapper>
-    );
-  }
-}
+          <TokenTickerWrapper
+            onClick={() => {
+              this.props.selectValue(value);
+            }}
+          >
+            <TokenTicker verified={verified} title={label} stared={favorite}>
+              {label}
+              {name && <TokenName> {name}</TokenName>}
+            </TokenTicker>
+            {!verified && <NotVerified>{translate("NOT_VERIFIED")}</NotVerified>}
+          </TokenTickerWrapper>
+        </ValueWrapper>
+      );
+    }
+  };
 
+  RenderOptionComponent.propTypes = {
+    selectValue: PropTypes.func.isRequired,
+    style: PropTypes.object.isRequired,
+    option: tokenPropType.isRequired,
+    focused: PropTypes.bool.isRequired
+  };
+
+  return RenderOptionComponent;
+};
+
+const TOKEN_ROW_HEIGHT = 22.9928;
+const TOKEN_LIST_HEIGHT = 200;
 class TokenSelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.tokens[0] && props.tokens[0].address
+      value: props.currentToken.address,
+      isOpen: false
     };
   }
 
@@ -66,39 +109,85 @@ class TokenSelector extends Component {
       this.setState({
         value: nextProps.currentToken.address
       });
-      return;
-    }
-    const firtsToken = nextProps.tokens[0];
-    if (firtsToken) {
-      this.setState({
-        value: firtsToken.address
-      });
     }
   }
 
+  onOpen = () => {
+    this.addKeyListeners();
+    this.setState({ isOpen: true });
+  }
+
+  onClose = () => {
+    this.removeKeyListeners();
+    this.setState({ isOpen: false });
+  }
+
   setValue = value => {
-    this.props.currentTokenChanged(value);
+    if (!value) return;
+    this.props.setCurrentToken({ token: value.address || value});
   };
+
 
   arrowRenderer = ({ isOpen }) =>
     isOpen ? null : <span className="Select-arrow" />;
+
+
+  addKeyListeners = () => {
+    this.keyListener = document.addEventListener('keydown', this.scrollTokenToView);
+  }
+
+  removeKeyListeners = () => {
+    document.removeEventListener('keydown', this.scrollTokenToView);
+  }
+
+  scrollTokenToView = () => {
+    if (this.tokensList && this.tokensList.scroll) {
+      const scrollTop = this.tokensList.scroll.getScrollTop();
+      if (this.focusedTokenIndex * TOKEN_ROW_HEIGHT < scrollTop) {
+        this.tokensList.scrollTop(this.focusedTokenIndex * TOKEN_ROW_HEIGHT);
+      } else if (
+        this.focusedTokenIndex * (TOKEN_ROW_HEIGHT) > scrollTop + TOKEN_LIST_HEIGHT
+      ) {
+        this.tokensList.scrollTop((this.focusedTokenIndex + 1) * TOKEN_ROW_HEIGHT - TOKEN_LIST_HEIGHT);
+      }
+    }
+  }
   menuRenderer = params => {
-    // use default renderer in a hacky way
-    const menu = Select.defaultProps.menuRenderer(params);
+    const { openModal, translate } = this.props;
+    const { options, focusedOption } = params;
+    const Row = getRenderOptionComponent({ }, { translate });
 
-    const scrollBarProps = {
-      autoHeight: true,
-      autoHeightMin: 0,
-      autoHeightMax: 200
-    };
+    const newFocusedTokenIndex = options.indexOf(focusedOption);
+    if (newFocusedTokenIndex !== this.focusedTokenIndex) {
+      this.focusedTokenIndex = newFocusedTokenIndex;
+    }
 
-    const { openModal } = this.props;
+    const renderRow = ({key, index, style}) => (
+      <Row
+        focused={options[index] === focusedOption}
+        style={style}
+        key={key}
+        selectValue={params.selectValue}
+        option={options[index]}
+      >
+        {options[index].label}
+      </Row>
+    );
 
     return (
       <Fragment>
-        <Scrollbar {...scrollBarProps}>{menu}</Scrollbar>
+        <List
+          ref={el => {this.tokensList = el;}}
+          width={199}
+          height={TOKEN_LIST_HEIGHT}
+          rowHeight={TOKEN_ROW_HEIGHT}
+          rowCount={options.length}
+          renderRow={renderRow}
+        />
         <AddTokenButton
-          innerRef={(b) => {this.addTokenButton = b;}}
+          innerRef={b => {
+            this.addTokenButton = b;
+          }}
           onClick={() => {
             this.addTokenButton.focus();
             openModal({
@@ -106,7 +195,7 @@ class TokenSelector extends Component {
             });
           }}
         >
-          + new token
+          + {translate("NEW_TOKEN")}
         </AddTokenButton>
       </Fragment>
     );
@@ -114,17 +203,20 @@ class TokenSelector extends Component {
 
   render() {
     const { tokens } = this.props;
+    const { isOpen } = this.state;
     return (
       <Select
+        onOpen={this.onOpen}
+        onClose={this.onClose}
         className="token-selector-wrapper"
         value={this.state.value}
         clearable={false}
         onChange={this.setValue}
+        filterOption={filterToken}
         menuRenderer={this.menuRenderer}
         arrowRenderer={this.arrowRenderer}
         placeholder={<Placeholder>ticker...</Placeholder>}
-        valueComponent={renderValueComponent}
-        optionComponent={RenderOptionComponent}
+        valueComponent={renderValueComponent(!isOpen)}
         options={tokens.map(t => ({
           ...t,
           value: t.address,
@@ -135,14 +227,29 @@ class TokenSelector extends Component {
   }
 }
 
+TokenSelector.propTypes = {
+  openModal: PropTypes.func.isRequired,
+  setCurrentToken: PropTypes.func.isRequired,
+  tokens: PropTypes.arrayOf(tokenPropType).isRequired,
+  currentToken: PropTypes.shape({
+    address: PropTypes.string
+  }).isRequired,
+  translate: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
   tokens: getTokens(state),
-  currentToken: getCurrentToken(state)
+  currentToken: getCurrentToken(state),
+  translate: getTranslate(state.locale)
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  openModal: openModalAction,
-  currentTokenChanged: currentTokenChangedAction
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      openModal: openModalAction,
+      setCurrentToken: setCurrentTokenAction
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(TokenSelector);

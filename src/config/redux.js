@@ -2,19 +2,33 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import createSagaMiddleware from 'redux-saga';
 import { connectRoutes } from 'redux-first-router';
-import createHistory from 'history/createHashHistory';
+import queryString from 'query-string';
+import createHistory from 'history/createBrowserHistory';
+import { localeReducer as locale } from 'react-localize-redux';
 
 import rootSaga from '../sagas';
 import reducers from '../reducers';
-import routes from '../routes';
+import routes, { onBeforeChange } from '../routes';
 
 const history = createHistory();
 
-const reduxHistory = connectRoutes(history, routes);
+export const reduxHistory = connectRoutes(history, routes, {
+  initialDispatch: false,
+  querySerializer: queryString,
+  onBeforeChange
+});
+
+let isHistoryInitialized = false;
+export const historyInitialDispatch = () => {
+  if (isHistoryInitialized) return;
+  reduxHistory.initialDispatch();
+  isHistoryInitialized = true;
+};
 
 const rootReducer = combineReducers({
   ...reducers,
-  location: reduxHistory.reducer
+  location: reduxHistory.reducer,
+  locale
 });
 
 const composeEnhancers = composeWithDevTools({
@@ -28,13 +42,12 @@ const middleware = applyMiddleware(
   sagaMiddleware
 );
 
-export default () => {
-  const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
+export default (initState = {}) => {
+  const store = createStore(rootReducer, initState, composeEnhancers(
     reduxHistory.enhancer,
     middleware
   ));
 
   sagaMiddleware.run(rootSaga);
-
   return store;
 };

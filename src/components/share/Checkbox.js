@@ -11,6 +11,9 @@ const Input = styled.input`
 const Checkmark = styled.span`
   position: relative;
   top: -2px;
+  @media (max-width: 1440px) {
+    top: -4px;
+  }
   margin-right: 6px;
   height: 14px;
   width: 15px;
@@ -51,9 +54,9 @@ const Label = styled.label`
 `;
 
 
-const Checkbox = ({ checked, label, onChange, color }) => (
+const Checkbox = ({ checked, label, onChange, color, id }) => (
   // eslint-disable-next-line
-  <Label checked={checked} color={color}>
+  <Label id={id} checked={checked} color={color}>
     <Input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
     <Checkmark />
     {label}
@@ -64,11 +67,13 @@ Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  id: PropTypes.string,
   color: PropTypes.string
 };
 
 Checkbox.defaultProps = {
-  color: 'white'
+  color: 'white',
+  id: null
 };
 
 export default Checkbox;

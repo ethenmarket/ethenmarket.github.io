@@ -1,21 +1,24 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Header, Table, Toggle, Note, Loading } from "../share";
+import { getTranslate } from 'react-localize-redux';
+import { Header, Table, Toggle, Note, Loading, withHover, Loader } from "../share";
 import MoveFunds, { MOVE_FUNDS_TYPES } from "./MoveFunds";
 
 import {
   getBalances,
-  toggleMoveFundsMode as toggleMoveFundsModeAction
+  toggleMoveFundsMode as toggleMoveFundsModeAction,
+  clearHighlight as clearHighlightAction,
+  userIsUndefErrorMessage
 } from "../../reducers/balances";
 
 import { getCurrentToken } from "../../reducers/tokens";
 
-import { cropAddress } from "../../utils";
+import { cropAddress, getCellContent, getLinkToTransaction } from "../../utils";
 
 import {
   deposit as depositAction,
@@ -25,28 +28,6 @@ import {
   isError,
   getBalances as getBalancesAction
 } from "../../reducers/actions";
-
-const withHover = (Wrapped) => class WithHover extends Component {
-  static displayName = `withHover(${Wrapped.displayName})`
-  state = { hover: false }
-  hoverOn = () => {
-    this.setState({ hover: true });
-  }
-  hoverOff = () => {
-    this.setState({ hover: false });
-  }
-  render() {
-    return (
-      <div
-        style={{ height: '100%' }}
-        onMouseEnter={this.hoverOn}
-        onMouseLeave={this.hoverOff}
-      >
-        <Wrapped hover={this.state.hover} {...this.props} />
-      </div>
-    );
-  }
-};
 
 const LoadingTable = Loading(Table);
 
@@ -61,19 +42,20 @@ const NameCellChild = styled.span`
 const NameCellStyled = styled.div`
   width: 100%;
   height: 100%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   box-sizing: border-box;
   &:hover {
     ${props =>
     props.address
       ? `
-          background-color: rgb(19,180,206);
-          position: relative;
-          padding-left: 20px;
+          background-color: ${props.theme.primaryFontColor};
+          flex-direction: row;
+          padding: 0 20px;
           left: -20px;
-          width: 430px;
+          width: auto;
           cursor: pointer;
+          position: relative;
           `
       : ""};
   }
@@ -81,13 +63,12 @@ const NameCellStyled = styled.div`
     ${props =>
     props.address
       ? `
-      position: absolute;
+      position: static;
       overflow: visible;
       `
       : ""};
   }
 `;
-
 
 const NameCell = ({ hover, address, name }) => (
   <NameCellStyled address={address} >
@@ -95,36 +76,51 @@ const NameCell = ({ hover, address, name }) => (
   </NameCellStyled>
 );
 
+const NameCellWithHover = withHover(NameCell);
+
+
 const NameCellWrap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
 `;
 
-export const balancesCompare = (a, b, invert) => {
-  if (a === 'ETH') return -1;
-  if (b === 'ETH') return 1;
-  if (invert) {
-    if (a === b) return 0;
-    return a > b ? -1 : 1;
+const BalanceCell = styled.div`
+  ${props => props.bold && 'font-weight: bold;'}
+  transition: background-color 0.2s ease-out;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  ${props => props.highlight && `background-color: ${props.highlight};`}
+`;
+
+const getLoader = (tx) => {
+  if (tx) {
+    return (
+      <a href={getLinkToTransaction(tx)} rel="noopener noreferrer" target="_blank" >
+        <Loader
+          fillContainer
+          width="25px"
+          height="25px"
+          isLoading
+        />
+      </a>
+    );
   }
-  if (a === b) return 0;
-  return a > b ? 1 : -1;
+  return null;
 };
 
-const NameCellWithHover = withHover(NameCell);
-
-const getColumns = ({ onAddressClick }) => [
+const getColumns = ({ onAddressClick, translate }) => [
   {
-    Header: "Token",
+    Header: translate("TOKEN"),
     accessor: "name",
     width: "15%",
-    comparator: balancesCompare,
+    align: 'left',
     renderCell: datum => (
       <CopyToClipboard
         text={datum.address || datum.name}
         onCopy={() => {
-          onAddressClick(datum.address);
+          onAddressClick(datum.address || datum.name);
         }}
       >
         <NameCellWrap>
@@ -134,31 +130,62 @@ const getColumns = ({ onAddressClick }) => [
     )
   },
   {
-    Header: "Wallet",
-    accessor: "wallet"
-  },
-  {
     Header: "ETHEN",
-    accessor: "ethen"
+    accessor: "ethen",
+    renderCell: (datum) => (
+      <BalanceCell
+        bold
+        data-token={datum.address}
+        data-wallet="ethen"
+        highlight={datum.highlight && datum.highlight.ethen}
+      >
+        {getLoader(datum.tx)}
+        {getCellContent(datum.ethen)}
+      </BalanceCell>
+    )
   },
   {
-    Header: "Total",
+    Header: translate("WALLET"),
+    accessor: "wallet",
+    renderCell: (datum) => (
+      <BalanceCell
+        data-token={datum.address}
+        data-wallet="wallet"
+        highlight={datum.highlight && datum.highlight.wallet}
+      >
+        {getCellContent(datum.wallet)}
+      </BalanceCell>
+    )
+  },
+  {
+    Header: translate("TOTAL"),
     accessor: "total"
+  },
+  {
+    Header: translate("BID"),
+    precision: 6,
+    accessor: "bid"
+  },
+  {
+    Header: translate("ESTIMATED_ETH"),
+    accessor: "est"
   }
 ];
 
-/* eslint-disable react/no-multi-comp */
-
 class Balances extends Component {
-  constructor(props) {
-    super(props);
-    this.columns = getColumns({
-      onAddressClick: this.toggleNote
-    });
-  }
   state = {
     showNote: false
   };
+
+  componentDidMount() {
+    window.addEventListener('focus', this.resetHighlightsAll);
+    this.balances.addEventListener('transitionend', this.handleTransition);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('focus', this.resetHighlightsAll);
+    this.balances.removeEventListener('transitionend', this.handleTransition);
+  }
 
   getActionHandler = action => info => {
     action({
@@ -167,8 +194,23 @@ class Balances extends Component {
     });
   };
 
+  resetHighlightsAll = () => {
+    this.props.clearHighlight({ all: true });
+  }
+
+  resetHighlights = () => {
+    this.props.clearHighlight({ all: true });
+  }
+
+  handleTransition = (e) => {
+    const { target: { dataset } } = e;
+    if (dataset.wallet) {
+      this.props.clearHighlight({token: dataset.token, wallet: dataset.wallet});
+    }
+  }
+
   toggleNote = () => {
-    this.setState(state => {
+    this.setState(() => {
       setTimeout(() => this.setState({ showNote: false }), 2500);
       return {
         showNote: true
@@ -179,30 +221,44 @@ class Balances extends Component {
   render() {
     const {
       balances,
+      mainBalances,
       toggleMoveFundsMode,
       isEtherActive,
       withdraw,
       deposit,
       transfer,
       isLoading,
-      approvingState,
+      txState,
       token,
       error,
-      requestData
+      requestData,
+      errorMessage,
+      translate
     } = this.props;
-    const symbol = token.symbol || cropAddress(token.address, 4);
-
     const currentTokenBalance = balances.find(t => t.address === token.address) || {
       ethen: '0',
       wallet: '0'
     };
-    const etherBalance = balances.find(t => t.real);
+    const etherBalance = mainBalances.find(t => t.real);
     const maxBalance = isEtherActive ? etherBalance : currentTokenBalance;
+    const symbol = token.symbol || cropAddress(token.address, 4);
+    const decimals = isEtherActive ? 18 : token.decimals; // 18 because smallest unit is 1 wei
+    balances.forEach(b => {
+      if (b.highlight) {
+        if (b.highlight.wallet) this.resetHighlights(b.address, 'wallet');
+        if (b.highlight.ethen) this.resetHighlights(b.address, 'ethen');
+      }
+    });
+
+    const columns = getColumns({
+      onAddressClick: this.toggleNote,
+      translate: this.props.translate
+    });
     return (
-      <Fragment>
-        <Header>Balance</Header>
-        <Note show={this.state.showNote}>Copied to clipboard</Note>
-        <Tabs className="balances-tabs">
+      <div style={{ height: '100%' }} ref={(e) => {this.balances = e;}}>
+        <Header>{translate("BALANCE")}</Header>
+        <Note show={this.state.showNote}>{translate("COPIED")}</Note>
+        <Tabs id="balances-tabs">
           <TabList>
             <Toggle
               leftText={symbol}
@@ -211,61 +267,74 @@ class Balances extends Component {
               onChange={toggleMoveFundsMode}
               style={{ marginRight: "30px" }}
             />
-            <Tab>Deposit</Tab>
-            <Tab>Withdraw</Tab>
-            <Tab>Transfer</Tab>
+            <Tab>{translate("DEPOSIT")}</Tab>
+            <Tab className="react-tabs__tab withdraw-tab">{translate("WITHDRAW")}</Tab>
+            <Tab className="react-tabs__tab transfer-tab">{translate("TRANSFER")}</Tab>
           </TabList>
           <TabPanel>
             <MoveFunds
+              translate={translate}
               maxAmount={maxBalance.wallet}
-              isError={isError(approvingState)}
-              isLoading={getIsLoading(approvingState)}
+              decimals={decimals}
+              isError={isError(txState)}
+              isLoading={getIsLoading(txState)}
               action={this.getActionHandler(deposit)}
               type={MOVE_FUNDS_TYPES.DEPOSIT}
               symbol={isEtherActive ? "ETH" : symbol}
+              ether={isEtherActive}
             />
           </TabPanel>
           <TabPanel>
             <MoveFunds
+              translate={translate}
               maxAmount={maxBalance.ethen}
+              decimals={decimals}
               action={this.getActionHandler(withdraw)}
               type={MOVE_FUNDS_TYPES.WITHDRAW}
               symbol={isEtherActive ? "ETH" : symbol}
+              ether={isEtherActive}
             />
           </TabPanel>
           <TabPanel>
             <MoveFunds
+              translate={translate}
               maxAmount={maxBalance.wallet}
+              decimals={decimals}
               action={this.getActionHandler(transfer)}
               type={MOVE_FUNDS_TYPES.TRANSFER}
               symbol={isEtherActive ? "ETH" : symbol}
+              ether={isEtherActive}
             />
           </TabPanel>
         </Tabs>
         <LoadingTable
+          translate={translate}
           odd
           isLoading={isLoading}
-          requestData={requestData}
+          requestData={errorMessage === userIsUndefErrorMessage ? null : requestData}
           error={error}
+          errorMessage={errorMessage}
           height="calc(100% - 148px)"
           data={balances}
-          columns={this.columns}
+          preHeader={mainBalances}
+          columns={columns}
         />
-      </Fragment>
+      </div>
     );
   }
 }
 
+const balanceRowPropType = PropTypes.shape({
+  name: PropTypes.string,
+  wallet: PropTypes.string,
+  ethen: PropTypes.string,
+  bid: PropTypes.string,
+  est: PropTypes.string
+});
+
 Balances.propTypes = {
-  balances: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      wallet: PropTypes.string,
-      ethen: PropTypes.string,
-      bid: PropTypes.string,
-      est: PropTypes.string
-    })
-  ).isRequired,
+  balances: PropTypes.arrayOf(balanceRowPropType).isRequired,
+  mainBalances:  PropTypes.arrayOf(balanceRowPropType).isRequired,
   isEtherActive: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
@@ -274,17 +343,23 @@ Balances.propTypes = {
   withdraw: PropTypes.func.isRequired,
   transfer: PropTypes.func.isRequired,
   requestData: PropTypes.func.isRequired,
+  clearHighlight: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired,
   token: PropTypes.object.isRequired,
-  approvingState: PropTypes.string.isRequired
+  txState: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-  balances: getBalances(state),
+  balances: getBalances(state).balances,
+  mainBalances: getBalances(state).mainBalances,
   isEtherActive: state.balances.isEtherActive,
   isLoading: getIsLoading(state.balances.state),
   error: isError(state.balances.state),
+  errorMessage: state.balances.errorMessage,
   token: getCurrentToken(state),
-  approvingState: state.balances.depositApprovingState
+  txState: state.balances.txState,
+  translate: getTranslate(state.locale)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -294,7 +369,8 @@ const mapDispatchToProps = dispatch =>
       deposit: depositAction,
       withdraw: withdrawAction,
       transfer: transferAction,
-      requestData: getBalancesAction
+      requestData: getBalancesAction,
+      clearHighlight: clearHighlightAction
     },
     dispatch
   );

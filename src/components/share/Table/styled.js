@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import colorUtil from "color";
 
 const Arrow = (color, down = true) => `
   content: "";
@@ -18,6 +19,11 @@ export const TableBody = styled.div`
   height: 100%;
   display: grid;
   grid-auto-rows: min-content;
+  grid-template-columns: 100%;
+`;
+
+export const TablePreHeader = TableBody.extend`
+  height: auto;
 `;
 
 export const TableHeader = styled.div`
@@ -30,24 +36,23 @@ export const TableHeader = styled.div`
 `;
 
 
-
 export const TableText = styled.div`
   display: flex;
   height: 100%;
   align-items: center;
-  text-align: right;
-  justify-content: flex-end;
+  justify-content: ${props => props.align === 'left' ? 'flex-start' : 'flex-end'};
   width: 100%;
 `;
 
 export const HeadCell = styled.div`
-  color: rgb(97,118,139);
+  color: ${props => props.theme.borderColorDark};
   border-bottom: 1px solid;
+  ${props => props.preHeader && 'padding-top: 5px;border-top: 1px solid;'}
   padding-bottom: 5px;
   font-size: .9rem;
   user-select: none;
   & ${TableText}::after {
-    ${props => props.text && Arrow(props.sorted ? 'white' : 'rgb(97,118,139)', props.sorted ? props.order : true)};
+    ${props => props.text && Arrow(props.sorted ? props.theme.mainFontColor : props.theme.borderColorDark, props.sorted ? props.order : true)};
     cursor: pointer;
   }
 `;
@@ -59,18 +64,29 @@ export const Cell = styled.span`
   height: 100%;
   display: flex;
   align-items: center;
-  /* min-width: min-content; */
   color: ${props => props.color};
 `;
 
 export const Row = styled.div`
-  ${props => props.odd
-    ? '&:nth-child(odd) {background-color: rgba(12,18,26,0.6313725490196078);}'
-    : ''}
-
-  display: grid;
-  grid-template-columns: ${props => props.widths.map(w => w || '1fr').join(' ')};
-  grid-auto-rows: 30px;
-  align-items: center;
   padding: 0 20px;
+  box-sizing: border-box;
+  ${props => props.odd
+    ? `&:nth-child(odd) {background-color: ${colorUtil(props.theme.bg1).darken(0.1).toString()};}`
+    : ''}
+  ${props => props.grouped ?
+    `
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      padding-top: 5px;
+      padding-bottom: 2px;
+      text-align: right;
+    ` :
+    `
+      display: grid;
+      grid-template-columns: ${props.widths.map(w => w || '1fr').join(' ')};
+      grid-auto-rows: 30px;
+      align-items: center;
+    `}
 `;

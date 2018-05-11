@@ -1,33 +1,35 @@
 import produce from 'immer';
-import { LEDGER, METAMASK } from '../API/web3';
 import { createAction } from './util';
+import { STATES } from './actions';
 
 const initState = {
-  available: { PRIVATE_KEY: true },
   current: '',
-  privateKey: ''
+  privateKey: '',
+  state: STATES.loading
 };
 
-export const UPDATE_AVAILABLE_PROVIDERS = 'web3-provider/UPDATE_AVAILABLE_PROVIDERS';
-export const updateProviders = createAction(UPDATE_AVAILABLE_PROVIDERS);
 export const SELECT_CURRENT_PROVIDER = 'web3-provider/SELECT_CURRENT_PROVIDER';
 export const selectProvider = createAction(SELECT_CURRENT_PROVIDER);
+export const SET_CURRENT_PROVIDER = 'web3-provider/SET_CURRENT_PROVIDER';
+export const setProvider = createAction(SET_CURRENT_PROVIDER);
 export const SET_PRIVATE_KEY = 'web3-provider/SET_PRIVATE_KEY';
 export const setPrivateKey = createAction(SET_PRIVATE_KEY);
-
+export const PROVIDER_LOADING = 'web3-provider/PROVIDER_LOADING';
+export const providerLoading = createAction(PROVIDER_LOADING);
 
 export default (state = initState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case UPDATE_AVAILABLE_PROVIDERS: {
-      let current = '';
-      if (action.payload[METAMASK]) current = METAMASK;
-      if (action.payload[LEDGER]) current = LEDGER;
-      draft.available = action.payload;
-      draft.current = current;
+    case SET_CURRENT_PROVIDER: {
+      const { provider } = action.payload;
+      draft.state = STATES.defined;
+      if (action.payload[provider]) {
+        draft.current = provider;
+      }
       break;
     }
-    case SELECT_CURRENT_PROVIDER: {
-      draft.current = action.payload;
+
+    case PROVIDER_LOADING: {
+      draft.state = STATES.loading;
       break;
     }
 

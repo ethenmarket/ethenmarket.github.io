@@ -22,7 +22,7 @@ export const Value = styled.div`
   text-align: left;
   font-size: 0.9rem;
   font-weight: bold;
-  color: white;
+  color: ${props => props.active ? props.theme.mainFontColor : 'white'};
   padding-left: 5px;
   max-width: 90%;
   overflow: hidden;
@@ -39,7 +39,7 @@ export const ValueWrapper = styled.div`
   &:hover {
     background-color: white;
   }
-  background-color: #eaeaea;
+  background-color: ${props => props.focused ? "white" : "#eaeaea"};
 `;
 
 export const TokenTicker = styled.div`
@@ -49,12 +49,17 @@ export const TokenTicker = styled.div`
   overflow: hidden;
   white-space: nowrap;
   width: auto;
-  max-width: 50%;
+  ${props => !props.verified && `max-width: 50%;`}
   text-align: left;
 `;
 
+export const TokenName = styled.span`
+  font-weight: normal;
+  color: rgba(57,68,79, 0.75);
+`;
+
 export const TokenTickerWrapper = styled.button`
-  width: 100%;
+  width: 85%;
   box-sizing: border-box;
   background-color: inherit;
   align-content: center;

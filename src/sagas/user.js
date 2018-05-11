@@ -1,13 +1,17 @@
 import { eventChannel } from 'redux-saga';
-import { put, call, select, fork, cancel, cancelled, take } from 'redux-saga/effects';
-import { updateUserAccount, USER_UPDATE_ACCOUNT } from '../reducers/user';
-import { UPDATE_AVAILABLE_PROVIDERS, SELECT_CURRENT_PROVIDER } from '../reducers/web3-provider';
+import { put, call, select, fork, cancel, cancelled, take, takeEvery, spawn } from 'redux-saga/effects';
+import { updateUserAccount, updateUserBalance } from '../reducers/user';
+import { SET_CURRENT_PROVIDER } from '../reducers/web3-provider';
+import handlerError from './errors';
 
+import API from '../API';
 import getWeb3, { PRIVATE_KEY, getUserAddress, getAddressFromPK } from '../API/web3';
-import { getBalances, getOwnOrders } from '../reducers/actions';
+import { getAuthenticated, SEND_EMAIL } from '../reducers/actions';
+import { openModal, MODAL_TYPES } from '../reducers/modal';
 
+
+const USER_UPDATE = 'USER_UPDATE';
 const createWeb3Chanel = (web3, web3Provider) => eventChannel((emit) => {
-
   const startUpdateUserAccount = (account) => {
     if (!account) return;
 
@@ -17,17 +21,18 @@ const createWeb3Chanel = (web3, web3Provider) => eventChannel((emit) => {
         return;
       }
       if (!balance) return;
-      emit(updateUserAccount({
-        address: account,
-        balance: balance.div('1e18').toString()
-      }));
+      emit({
+        type: USER_UPDATE,
+        address: account.toLowerCase(),
+        balance: balance.toString()
+      });
     });
   };
 
-  const accountInterval = setInterval(() => {
-    const account = getUserAddress(web3, web3Provider);
+  const accountInterval = setInterval(async () => {
+    const account = await getUserAddress(web3, web3Provider);
     startUpdateUserAccount(account);
-  }, 250);
+  }, 200);
 
   const unsubscribe = () => {
     clearInterval(accountInterval);
@@ -37,15 +42,19 @@ const createWeb3Chanel = (web3, web3Provider) => eventChannel((emit) => {
 });
 
 function* filterWeb3Actions(action) {
-  if (action.type === USER_UPDATE_ACCOUNT) {
+  if (action.type === USER_UPDATE) {
     const user = yield select(state => state.user);
-    const { address, balance } = action.payload;
-    if (user.address !== address || user.balance !== balance) {
-      // USER CHANGED
-      yield put(action);
-      yield put(getBalances());
-      yield put(getOwnOrders());
+    const ether = yield select(state => state.balances.ether.wallet);
+    const { address, balance } = action;
+    if (user.address !== address) {
+      yield put(updateUserAccount({ address }));
+      yield put(getAuthenticated());
+
+      API.sendStat({}, address); // send stat, do not wait for response
     };
+    if (ether !== balance) {
+      yield put(updateUserBalance({ balance }));
+    }
   }
 }
 
@@ -54,7 +63,9 @@ function* handleWeb3Actions () {
   let web3Provider;
   try {
     web3Provider = yield select(state => state.web3Provider.current);
+    if (!web3Provider) return;
     const web3 = yield call(getWeb3[web3Provider]);
+
     web3Chanel = yield call(createWeb3Chanel, web3, web3Provider);
     if (web3Provider === PRIVATE_KEY) {
       const pk = yield select(state => state.web3Provider.privateKey);
@@ -75,16 +86,34 @@ function* handleWeb3Actions () {
   }
 }
 
-export default function* () {
+function* walletUpdates() {
   try {
     while (true) {
       const updates = yield fork(handleWeb3Actions);
       yield take([
-        UPDATE_AVAILABLE_PROVIDERS,
-        SELECT_CURRENT_PROVIDER
+        SET_CURRENT_PROVIDER
       ]);
       yield cancel(updates);
     }
   } catch(e) {
-    console.log(e);}
+    console.error(e);
+  }
+}
+
+function* handleSendEmail(action) {
+  if (action.payload) {
+    try {
+      yield call(API.sendEmail, action.payload);
+    } catch (e) {
+      yield handlerError(e);
+    }
+  }
+  yield put(openModal({
+    type: MODAL_TYPES.USER_GUIDE
+  }));
+}
+
+export default function* () {
+  yield spawn(walletUpdates);
+  yield takeEvery(SEND_EMAIL, handleSendEmail);
 };

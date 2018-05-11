@@ -1,3 +1,5 @@
+@keyframes blink { from { background-color: transparent; transition: .7s ease-in-out} }
+
 html, #root {
   height: 100vh;
 }
@@ -13,6 +15,22 @@ body {
   color: white;
 }
 
+body.light {
+    color: #1F2835;
+    background-color: #f4f4f5;
+}
+
+a {
+    text-decoration: none;
+    color:  rgb(19,180,206);
+}
+
+@media (max-width: 1440px) {
+    html {
+        font-size: 13px;
+    }
+}
+
 * {
     font-family: "Gotham Pro", serif;
 }
@@ -22,15 +40,21 @@ strong {
 }
 
 .react-tabs__tab {
-    margin-right: 15px;
+    margin-right: 20px;
     color: rgb(19,180,206);
-    font-size: 1rem;
+    font-size: 0.9rem;
     user-select: none;
     padding: 10px 0;
+    cursor: pointer;
+    position: relative;
 }
 
 .react-tabs__tab--selected {
     color: white;
+}
+
+body.light .react-tabs__tab--selected {
+    color: #1F2835;
 }
 
 .react-tabs__tab--selected::after {
@@ -38,10 +62,14 @@ strong {
     display: block;
     width: 100%;
     height: 2px;
-    position: relative;
-    top: 12px;
+    position: absolute;
+    bottom: -2px;
     background-color: white;
     box-shadow: 0px -3px 15px 0px rgba(0,0,0,0.5);
+}
+
+body.light .react-tabs__tab--selected::after {
+    background-color: #1F2835;
 }
 
 .react-tabs__tab-list {
@@ -49,12 +77,65 @@ strong {
     border-bottom: 2px solid #161f2c;
     margin-bottom: 5px;
     padding: 0 20px;
+    max-height: 40px;
+}
+
+body.light .react-tabs__tab-list {
+    border-bottom: 2px solid #c2cad3;
+}
+
+@media (max-width: 1440px) {
+    .react-tabs__tab-list {
+        padding: 0 10px;
+    }
 }
 
 .react-tabs__tab-panel--selected {
     height: calc(100% - 45px);
 }
 
+.react-tabs__tab-list {
+    margin: 0;
+}
+
 .ReactModal__Body--open {
     overflow: hidden;
+}
+
+.notification-visible {
+    word-break: break-word;
+}
+
+
+/* Tutorial elements */
+
+.tutorial-transaction, .tutorial-denial {
+    animation: blink .7s alternate infinite;
+    transition: .7s;
+    font-weight: 500;
+}
+
+.tutorial-denial { background-color: rgba(255,52,52,.7) }
+.tutorial-transaction { background-color: rgba(122,234,255,.7) }
+.loader {
+    background: url('/img/loader.svg');
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin: -3px 2px;
+}
+
+/* REACT VIRTUALIZED */
+
+.ReactVirtualized__Grid.ReactVirtualized__List {
+    width: 100% !important;
+}
+
+/* REACT MODAL */
+.ReactModal__Body--open {
+    overflow-y: auto;
+}
+.ReactModal__Body--open::-webkit-scrollbar {
+    opacity: 0;
+    visibility: hidden;
 }
