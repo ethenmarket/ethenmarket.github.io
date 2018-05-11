@@ -100,39 +100,81 @@ export function* getCurrentTokenWalletBalance() {
   }
 }
 
-function* getBalances(action) {
+function* getAllTokensBalances(web3, userAddress, tokensAddresses, contract) {
+  try {
+    const balances = [];
+    const getBalance = promisify(contract.tokens.bind(contract));
+    const concurentRequestCount = 3;
+    while (tokensAddresses.length) {
+      const forRequest = tokensAddresses.slice(0, concurentRequestCount);
+      tokensAddresses = tokensAddresses.slice(concurentRequestCount);
+      const results = yield call(
+        [Promise, Promise.all],
+        forRequest.map(address => getBalance(userAddress, address))
+      );
+      for(let i = 0; i < results.length; i += 1) {
+        balances.push({
+          current: results[i].toString(),
+          address: forRequest[i]
+        });
+      }
+    }
+    return balances;
+  } catch (e) {
+    yield handleError(e);
+    return [];
+  }
+}
+
+export function* getBalances(action) {
   try {
     const init = action.payload && action.payload.init;
     const userAddress = yield select(state => state.user.address);
     const contract = yield select(state => state.contract.current);
-    const { data } = yield call(API.getBalances, contract, userAddress);
-    const tokens = yield select(state => state.tokens.addressesList);
     const currentToken = yield select(state => state.tokens.current.address);
+    // const tokens = Object.keys(yield select(state => state.tokens.map));
     const providerType = yield select(state => state.web3Provider.current);
+
+    if (!providerType) return;
+
     const web3 = yield call(getWeb3[providerType]);
     const etherBalance = yield call(
       promisify(web3.eth.getBalance.bind(web3.eth)),
       userAddress
     );
+
+    const ethenContract = yield call(getContract, web3, contract);
+    const etherBalanceEthen = yield call(
+      promisify(ethenContract.balances.bind(ethenContract)),
+      userAddress
+    );
+
     let newBalances = {
       ether: {
         wallet: etherBalance.toString(),
         ethen: {
-          current: data.ether.current,
-          losses: data.ether.losses,
-          gains: data.ether.gains
+          current: etherBalanceEthen.toString(),
+          losses: 0,
+          gains: 0
         },
-        txs: data.ether.txhashes
+        txs: []
       },
       tokens: {}
     };
-    data.tokens.forEach(ethenToken => {
-      const { current, gains, losses, address, bid, txhashes: txs } = ethenToken;
+
+    const tokensBalances = yield getAllTokensBalances(
+      web3,
+      userAddress,
+      [currentToken],
+      ethenContract
+    );
+
+    tokensBalances.forEach(ethenToken => {
+      const { current, address } = ethenToken;
       newBalances.tokens[ethenToken.address] = {
         address,
-        bid,
-        txs,
-        ethen: { current, gains, losses },
+        txs: [],
+        ethen: { current, losses: 0, gains: 0},
         wallet: '0'
       };
     });

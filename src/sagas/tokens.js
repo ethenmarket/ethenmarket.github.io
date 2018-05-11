@@ -1,7 +1,7 @@
 import { takeEvery, put, call, select } from "redux-saga/effects";
 import { getTranslate } from "react-localize-redux";
 
-import { getCurrentTokenWalletBalance } from "./balances";
+import { getBalances } from "./balances";
 import handleError from "./errors";
 import API from "../API";
 import {
@@ -15,11 +15,8 @@ import {
 } from "../reducers/tokens";
 import {
   GET_TOKENS_LIST,
-  getChartData,
   ADD_NEW_TOKEN,
-  getTokenOrders,
   SET_FAVORITE,
-  getTokenTrades,
   GET_CURRENT_TOKEN
 } from "../reducers/actions";
 import { closeModal } from "../reducers/modal";
@@ -44,10 +41,7 @@ function* fetchNewTokenData(action) {
   if (action.payload.onlyURL) return;
   const currentTokenAddress = yield select(state => state.tokens.current.address);
   if (!currentTokenAddress) return;
-  yield put(getChartData());
-  yield put(getTokenOrders());
-  yield put(getTokenTrades());
-  yield getCurrentTokenWalletBalance();
+  yield getBalances({});
 
   const currentToken = yield select(getCurrentToken);
   updateSEOInfo(currentToken);

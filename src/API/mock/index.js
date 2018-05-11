@@ -1,9 +1,12 @@
-import chartData from './sticks.json';
 import tokenList from './tokens-list.json';
 
 const makeResponse = data => () => Promise.resolve({ data });
 
 export default {
-  getChartData: makeResponse(chartData),
-  getTokenList: makeResponse(tokenList)
+  getTokenList: makeResponse(tokenList),
+  getToken(token) {
+    const res = tokenList.tokens.find(t => t.address === `${token}` || t.link === token);
+    if (res) return makeResponse(res)();
+    return Promise.reject(new Error("Undefined token"));
+  }
 };

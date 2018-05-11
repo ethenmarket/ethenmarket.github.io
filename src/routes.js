@@ -15,9 +15,6 @@ const Routes = {
 
 const buildUrl = (path, search) => search ? `${location.origin}${path}?${search}` : `${location.origin}${path}`; // eslint-disable-line
 
-let isUserSettedInterval;
-let events = [];
-const numberOfAttempt = 10;
 const INDEX_PAGE_MOCK = '___INDEX___';
 export const onBeforeChange = (dispatch, getState, { action: origAction }) => {
   // redirects
@@ -44,28 +41,6 @@ export const onBeforeChange = (dispatch, getState, { action: origAction }) => {
       dispatch(action);
     }
   }
-
-  // STATS
-  if (origAction.meta && !origAction.meta.location.prev.pathname) return;
-  const { prev, current } = origAction.meta.location;
-  const hrefBefore = buildUrl(prev.pathname, prev.search);
-  const hrefAfter = buildUrl(current.pathname, current.search);
-  const { referrer } = document;
-  let i = 0;
-  events.push({
-    referrer: i === 0 ? referrer : null,
-    hrefAfter,
-    hrefBefore
-  });
-  isUserSettedInterval = setInterval(() => {
-    const { user: { address } } = getState();
-    i += 1;
-    if (address !== zeroAddress || i >= numberOfAttempt) {
-      clearInterval(isUserSettedInterval);
-      events.forEach(e => API.sendStat(e, address));
-      events = [];
-    }
-  }, 500);
 };
 
 export default Routes;

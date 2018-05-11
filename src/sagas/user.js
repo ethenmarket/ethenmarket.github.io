@@ -4,10 +4,8 @@ import { updateUserAccount, updateUserBalance } from '../reducers/user';
 import { SET_CURRENT_PROVIDER } from '../reducers/web3-provider';
 import handlerError from './errors';
 
-import API from '../API';
 import getWeb3, { PRIVATE_KEY, getUserAddress, getAddressFromPK } from '../API/web3';
-import { getAuthenticated, SEND_EMAIL } from '../reducers/actions';
-import { openModal, MODAL_TYPES } from '../reducers/modal';
+import { getAuthenticated } from '../reducers/actions';
 
 
 const USER_UPDATE = 'USER_UPDATE';
@@ -49,8 +47,6 @@ function* filterWeb3Actions(action) {
     if (user.address !== address) {
       yield put(updateUserAccount({ address }));
       yield put(getAuthenticated());
-
-      API.sendStat({}, address); // send stat, do not wait for response
     };
     if (ether !== balance) {
       yield put(updateUserBalance({ balance }));
@@ -97,23 +93,11 @@ function* walletUpdates() {
     }
   } catch(e) {
     console.error(e);
+    yield handlerError(e);
   }
 }
 
-function* handleSendEmail(action) {
-  if (action.payload) {
-    try {
-      yield call(API.sendEmail, action.payload);
-    } catch (e) {
-      yield handlerError(e);
-    }
-  }
-  yield put(openModal({
-    type: MODAL_TYPES.USER_GUIDE
-  }));
-}
 
 export default function* () {
   yield spawn(walletUpdates);
-  yield takeEvery(SEND_EMAIL, handleSendEmail);
 };
