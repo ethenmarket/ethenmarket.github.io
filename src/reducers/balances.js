@@ -86,8 +86,8 @@ export default (state = initState, action) => produce(state, (draft) => {
     }
     case UPDATE_BALANCES: {
       const { tokens, ether } = action.payload;
-      draft.tokens = tokens;
-      draft.ether = ether;
+      draft.tokens = {...draft.tokens, ...tokens};
+      draft.ether = {...draft.ether, ...ether};
       draft.state = STATES.defined;
       break;
     }
