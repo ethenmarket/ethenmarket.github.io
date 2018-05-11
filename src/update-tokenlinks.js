@@ -1,7 +1,10 @@
 const fs = require('fs');
 const { tokens } = require('./API/mock/tokens-list');
 
-const tokenlinks = require('./tokenlinks');
+const tokenlinks = {
+  default: null,
+  tokens: {}
+};
 
 tokens.forEach(t => {
   if (t.link) {

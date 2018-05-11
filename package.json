@@ -65,10 +65,12 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build-faq": "node ./faq/build-faq",
-    "pre-build": "node ./src/upadte-tokenlinks",
+    "pre-build": "node ./src/update-tokenlinks",
     "build": "npm run pre-build && react-scripts build && npm run build-faq",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "homepage": "https://ethenmarket.github.io",
   "devDependencies": {
