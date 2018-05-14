@@ -160,15 +160,6 @@ const getColumns = ({ onAddressClick, translate }) => [
   {
     Header: translate("TOTAL"),
     accessor: "total"
-  },
-  {
-    Header: translate("BID"),
-    precision: 6,
-    accessor: "bid"
-  },
-  {
-    Header: translate("ESTIMATED_ETH"),
-    accessor: "est"
   }
 ];
 

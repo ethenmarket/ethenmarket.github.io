@@ -83,17 +83,10 @@ export const getTokens = createSelector(
     const tokens = list
       .map(addr => map[addr])
       .filter(t => onlyTrusted ? t.verified : true);
-    return tokens.map(t => {
-      const price = fromWeiToEther(from10e18BaseTokensPriceTo1Normal(t.price.toString(10), t.decimals)).toString();
-      const volume = fromWeiToEther(t.volume24h.toString(10)).toString();
-      return {
-        ...t,
-        price,
-        volume,
-        displayName: t.name || cropAddress(t.address),
-        change: t.change24h.toFixed(2)
-      };
-    }).sort(tokenSort);
+    return tokens.map(t => ({
+      ...t,
+      displayName: t.name || cropAddress(t.address)
+    })).sort(tokenSort);
   }
 );
 

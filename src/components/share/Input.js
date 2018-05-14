@@ -7,6 +7,12 @@ import warningIcon from './warning.svg';
 
 const isProcent = width => width[width.length - 1] === '%';
 
+const getBorder = props => {
+  if (props.border && props.theme.inputBorderColor) return `solid 1px ${props.theme.inputBorderColor}`;
+  if (props.border) return "solid 1px #566472";
+  return 'none';
+};
+
 const InputStyled = styled.input`
   height: ${props => props.height || '36px'};
   text-align: ${props => props.align};
@@ -19,7 +25,7 @@ const InputStyled = styled.input`
 
   border-radius: 2px;
   color: black;
-  border: ${props => props.border || props.theme.inputBorderColor ? `solid 1px ${props.theme.inputBorderColor}` : 'none'};
+  border: ${getBorder};
   font-family: 'Effra';
   padding: 0 10px 0 ${props => props.labelWidth};
   box-sizing: border-box;

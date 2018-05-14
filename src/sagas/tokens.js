@@ -96,10 +96,9 @@ function* getTokens() {
 
 function* handleAddNewToken(action) {
   try {
-    const address = action.payload.toLowerCase();
-    const user = yield select(state => state.user.address);
-    const { data } = yield call(API.addNewToken, { address, user });
-    yield put(addNewToken(data));
+    const { address: enteredAddress, decimals } = action.payload;
+    const address = enteredAddress.trim().toLowerCase();
+    yield put(addNewToken({ address, decimals }));
     yield put(closeModal());
     yield put(setCurrentToken({ token: address }));
   } catch (e) {

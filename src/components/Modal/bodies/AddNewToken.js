@@ -8,6 +8,7 @@ import { isValidAddress } from '../../../utils';
 class AddNewToken extends Component {
   state = {
     address: '',
+    decimals: '',
     isAddressInvalid: false
   }
 
@@ -15,20 +16,27 @@ class AddNewToken extends Component {
     this.setState({ address, isAddressInvalid: false });
   }
 
+  onDecimalsChange = (decimals) => {
+    this.setState({ decimals, isDecimalInvalid: false });
+  }
+
   handleOkClick = () => {
-    const { address } = this.state;
-    if (isValidAddress(address.trim())) {
-      this.props.addNewToken(address);
+    const { address, decimals } = this.state;
+    const isDecimalInvalid = parseInt(decimals, 10).toString() !== decimals;
+    const isAddressInvalid = !isValidAddress(address.trim());
+    if (!(isAddressInvalid || isDecimalInvalid)) {
+      this.props.addNewToken({ address, decimals });
     } else {
       this.setState({
-        isAddressInvalid: true
+        isAddressInvalid,
+        isDecimalInvalid
       });
     }
   }
 
   render() {
     const { closeModal, translate } = this.props;
-    const { address, isAddressInvalid } = this.state;
+    const { address, isAddressInvalid, decimals, isDecimalInvalid } = this.state;
     return (
       <Fragment >
         <Header>{translate("NEW_TOKEN")}<CloseButton onClick={closeModal} /></Header>
@@ -43,6 +51,20 @@ class AddNewToken extends Component {
               align="left"
               bgColor='#eaeaea'
               placeholder='0x0000000000000000000000000000000000000000'
+              border='1px solid #60758b'
+              width='80%'
+            />
+          </InputLabel>
+          <InputLabel>
+            {translate("DECIMALS")}
+            <Input
+              responsive
+              onChange={this.onDecimalsChange}
+              value={decimals}
+              invalide={isDecimalInvalid}
+              align="left"
+              bgColor='#eaeaea'
+              placeholder='18'
               border='1px solid #60758b'
               width='80%'
             />
