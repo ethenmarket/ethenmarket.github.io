@@ -3,7 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import createSagaMiddleware from 'redux-saga';
 import { connectRoutes } from 'redux-first-router';
 import queryString from 'query-string';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 import { localeReducer as locale } from 'react-localize-redux';
 
 import rootSaga from '../sagas';
