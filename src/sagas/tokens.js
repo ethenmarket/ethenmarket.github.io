@@ -63,7 +63,6 @@ function* getTokens() {
     const { data } = yield call(API.getTokenList);
     const currentAddress = yield select(state => state.tokens.current.address);
     const current = data.tokens.find(t => t.address === currentAddress);
-
     yield put(updateTokensList(data.tokens.map(t => ({
       ...t,
       price: t.price,

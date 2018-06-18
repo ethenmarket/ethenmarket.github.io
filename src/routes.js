@@ -1,9 +1,7 @@
 import { redirect } from 'redux-first-router';
 import { SET_CURRENT_TOKEN } from './reducers/tokens';
-import { zeroAddress } from './reducers/user';
 import { isValidAddress } from './utils';
 import definedLinks from './tokenlinks.json';
-import API from './API';
 
 const Routes = {
   [SET_CURRENT_TOKEN]: {
@@ -13,7 +11,6 @@ const Routes = {
   }
 };
 
-const buildUrl = (path, search) => search ? `${location.origin}${path}?${search}` : `${location.origin}${path}`; // eslint-disable-line
 
 const INDEX_PAGE_MOCK = '___INDEX___';
 export const onBeforeChange = (dispatch, getState, { action: origAction }) => {
@@ -34,6 +31,8 @@ export const onBeforeChange = (dispatch, getState, { action: origAction }) => {
         dispatch(action);
       }
     } else if (tokenPath === INDEX_PAGE_MOCK) {
+      console.log(definedLinks.default);
+
       const action = redirect({
         type: SET_CURRENT_TOKEN,
         payload: { token: definedLinks.default || 'index' }

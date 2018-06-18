@@ -11,7 +11,6 @@ import ENG from './langs/en.json';
 import { getContracts } from './reducers/actions';
 import { initState as balancesInitState } from './reducers/balances';
 import { updateContracts } from './reducers/contract';
-import { MODAL_TYPES, openModal } from './reducers/modal';
 import { initLanguage } from './reducers/user';
 
 
@@ -30,10 +29,6 @@ if (process.env.REACT_APP_CONTRACT) {
   store.dispatch(getContracts()); // load contracts from server
 }
 
-
-const isFirstTime = !localStorage.getItem('visited');
-localStorage.setItem('visited', true);
-if (isFirstTime) store.dispatch(openModal({ type: MODAL_TYPES.EMAIL }));
 
 // translation
 const languages = [

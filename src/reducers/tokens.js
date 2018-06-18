@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { createSelector } from 'reselect';
 import { createAction } from './util';
-import { tokenNameCompare, from10e18BaseTokensPriceTo1Normal, fromWeiToEther, cropAddress } from '../utils';
+import { tokenNameCompare, cropAddress } from '../utils';
 import { defaultToken, STATES } from './actions';
 import definedLinks from '../tokenlinks.json';
 
