@@ -31,8 +31,6 @@ export const onBeforeChange = (dispatch, getState, { action: origAction }) => {
         dispatch(action);
       }
     } else if (tokenPath === INDEX_PAGE_MOCK) {
-      console.log(definedLinks.default);
-
       const action = redirect({
         type: SET_CURRENT_TOKEN,
         payload: { token: definedLinks.default || 'index' }

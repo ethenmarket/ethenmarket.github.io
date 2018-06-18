@@ -12,5 +12,5 @@ tokens.forEach(t => {
   }
 });
 
-tokenlinks.default = Object.keys(tokenlinks.tokens)[0]; // eslint-disable-line
+tokenlinks.default = 'OMG'; // eslint-disable-line
 fs.writeFileSync(`${__dirname}/tokenlinks.json`, JSON.stringify(tokenlinks));
